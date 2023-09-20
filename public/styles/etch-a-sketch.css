@@ -1,0 +1,128 @@
+#etch-a-sketch {
+  /*
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  */
+  background-color: #fff;
+  color: #333;
+}
+
+canvas {
+  box-shadow: inset 0px 1px 6px 3px;
+  border-radius: 40px;
+  width: 600px;
+  height: 400px;
+  background-color: #ccccb2;				
+}
+
+.etch-a-sketch--wrapper {
+  margin: 0 auto;
+  width: 850px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  border-radius: 40px;
+  background-color: #e00000;
+  box-shadow: inset 0px 1px 1px 1px;
+  padding-top: 5rem;
+  margin-top: 4.8rem;
+}
+
+.etch-a-sketch--heading {
+  /*position: absolute;*/
+  top: 15px;
+  font-family: cursive;
+  font-size: 40px;
+  color: goldenrod;
+  padding-bottom: 1rem; 
+}
+
+
+
+/*
+// Knobs
+*/
+
+.dial {
+  /*position: relative;*/
+}
+
+.dial-left {
+  left: -7px ;
+}
+.dial-right {
+  right: -7px;
+}
+.knobs-container {
+  display: flex;
+  /*position: absolute;*/
+  width: 100%;
+  justify-content: space-between;
+  bottom: -7px;
+}
+
+.knob-background {
+	background-color: #333;
+	border-radius: 130px;
+	border: 20px solid #333;
+}
+
+.slider::before {
+	background: linear-gradient(
+		0deg, #535353 0%, #373737 100%
+  );
+  width: 5em;
+  height: 5em;
+  border-radius: 50%;
+  box-shadow: 
+	  0px -10px 10px #757575, 
+	  0px 10px 15px #111111, 
+	  inset 0px 5px 6px #979797, 
+	  inset 0px -5px 6px #242424;
+}
+
+
+
+.slider::before, .knob {
+	width: 9rem;
+	height: 9rem;
+	position: relative;
+}
+
+.knob::before,
+.knob::after,
+.slider::before {
+	content: '';
+	position: absolute;
+	border-radius: 50%;
+}
+
+.knob::before {
+	top: 15px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 10px;
+	height: 10px;
+	background: #fff;
+	box-shadow: 0px 0px 10px #349beb;
+}
+
+.knob::after {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: 3px solid #fff;
+	width: 130%;
+	height: 130%;
+	box-shadow: 0px 0px 10px #349beb,
+	  inset 0px 0px 10px #349beb;
+}
+
+.knob {
+	cursor: pointer;
+}

@@ -1,0 +1,33 @@
+#glorf {
+  /*letter-spacing: normal;*/
+  /*overflow: hidden;*/
+}
+
+.glorf--wrapper {
+  display: flex;
+  justify-content: space-around;
+}
+
+.game {
+  background: #333;
+  color: #fff;
+  overflow: hidden;
+  /*width: 50%;*/
+}
+
+.game > * {
+  letter-spacing: normal;
+}
+
+#level {
+  background-color: #fff;
+}
+
+.controls {
+  /*width: 25%;*/
+  font-size: 1.3rem;
+}
+
+.score {
+  /*width: 25%;*/
+}

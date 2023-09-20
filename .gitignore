@@ -1,0 +1,11 @@
+# Dependencies
+node_modules
+
+# Developer task tracking
+todo
+
+# Apple system files
+.DS_Store
+
+# Environment variables
+.env

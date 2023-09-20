@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paint!</title>
+  <link rel="stylesheet" type="text/css" href="/styles/main.css" />
+  <link rel="stylesheet" type="text/css" href="/styles/paint.css" />
+</head>
+<body id="paint">
+  <%- include('partials/_header'); %>
+
+  <div class="paint--wrapper section-padding color-accent-1">
+    <div class="toolbar-container">
+      <span class="toolbar-item selected" title="Brush">
+        <span class="toolbar-icon" id="tool-paintbrush"><%- include('partials/_icon-paintbrush'); %></span>
+      </span>
+      <span class="toolbar-item" title="Fill">
+        <span class="toolbar-icon" id="tool-paintbucket"><%- include('partials/_icon-paintbucket'); %></span>
+      </span>
+      <span class="toolbar-item" title="Eraser">
+        <span class="toolbar-icon" id="tool-eraser"><%- include('partials/_icon-eraser'); %></span>
+      </span>
+      <span class="toolbar-item selector circle" title="Brush size">
+        <details>
+          <summary>
+            <span class="toolbar-icon" id="tool-size"><%- include('partials/_icon-circle', {radius: '20'}); %></span>
+          </summary>
+          <ul class="toolbar-submenu">
+            <li id="brush-size-1"><%- include('partials/_icon-circle', {radius: '3'}); %></li>
+            <li id="brush-size-2" class="selected"><%- include('partials/_icon-circle', {radius: '5'}); %></li>
+            <li id="brush-size-3"><%- include('partials/_icon-circle', {radius: '10'}); %></li>
+            <li id="brush-size-4"><%- include('partials/_icon-circle', {radius: '20'}); %></li>
+            <li id="brush-size-5"><%- include('partials/_icon-circle', {radius: '30'}); %></li>
+          </ul>
+        </details>
+      </span>
+      <span class="toolbar-item selector" title="Color">
+        <details>
+          <summary>
+            <span class="toolbar-icon" id="tool-color"><%- include('partials/_icon-color'); %></span>
+          </summary>
+          <div id="color-picker-container">
+            <canvas id="color-picker-canvas"></canvas>
+            <div id="color-picker-circle"></div>
+            <div id="color-picker-text"></div>
+          </div>
+        </details>
+      </span>
+      <span class="toolbar-item">
+        <span class="toolbar-icon">6</span>
+      </span>
+      <span class="toolbar-item">
+        <span class="toolbar-icon">7</span>
+      </span>
+      <span class="toolbar-item">
+        <span class="toolbar-icon">8</span>
+      </span>
+    </div>
+
+    <canvas id="canvas" width="900" height="600"></canvas>
+
+  </div>
+
+  <script src="/scripts/paint.js"></script>
+
+  <%- include('partials/_footer'); %>
+</body>
+</html>

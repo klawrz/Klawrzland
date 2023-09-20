@@ -1,0 +1,11 @@
+canvas {
+  background: #fff;
+}
+
+.sandbox--controls {
+  margin-bottom: 2rem;
+}
+
+.sandbox--controls p {
+  margin: 0;
+}

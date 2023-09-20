@@ -1,0 +1,239 @@
+/*
+//
+/   Knobs CSS
+/   
+/   Credit for knob styling to QuickCodingTuts: https://www.youtube.com/watch?v=ELUSz0L8vTA
+//
+*/
+
+/*
+* {
+	cursor: default;
+	user-select: none;
+}
+*/
+
+#colour-picker {
+	background-color: #00ff00;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1rem;
+}
+
+.mode-container h2 {
+	text-align: center;
+	background-color: #fff;
+	border-radius: 10px;
+	border: 1px solid #333;
+  margin: 10px auto;
+  padding: 15px;
+}
+
+.output--container h5 {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	color: var(--color-text-2);
+}
+
+.pill {
+	text-align: center;
+	padding: 10px;
+	background: #333;
+	color: #fff;
+	border-radius: 20px;
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	cursor: default;
+	user-select: none;
+}
+
+.buttons-wrapper {
+  display: flex;
+	column-gap: 8px;
+}
+
+button {
+	padding: 15px 32px;
+	border: none;
+	font-size: 16px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.selected {
+	background-color: #333;
+	color: #fff;
+	border: 1px solid white;
+}
+
+.mode-button {
+  width: 50%;
+}
+
+.mode-button:not(.selected) {
+	border: 1px solid #333;
+}
+
+.mode-button:hover:not(.selected) {
+	box-shadow: inset 1px 1px 3px;
+}
+
+button:active {
+	position: relative;
+	top: 1px;
+	left: 1px;
+}
+
+/*
+.title {
+	padding: 5px 0;
+}
+*/
+
+.knobs-container {
+	display: flex;
+  padding: 5px;
+}
+
+.knob-wrapper {
+	margin: 10px;
+}
+
+.knob-background {
+	background-color: #333;
+	border-radius: 130px;
+	border: 20px solid #333;
+}
+
+.slider::before {
+	background: linear-gradient(
+		0deg, #535353 0%, #373737 100%
+  );
+  width: 5em;
+  height: 5em;
+  border-radius: 50%;
+  box-shadow: 
+	  0px -10px 10px #757575, 
+	  0px 10px 15px #111111, 
+	  inset 0px 5px 6px #979797, 
+	  inset 0px -5px 6px #242424;
+}
+
+
+
+.slider::before, .knob {
+	width: 12rem;
+	height: 12rem;
+	position: relative;
+}
+
+.knob::before,
+.knob::after,
+.slider::before {
+	content: '';
+	position: absolute;
+	border-radius: 50%;
+}
+
+.knob::before {
+	top: 15px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 10px;
+	height: 10px;
+	background: #fff;
+	box-shadow: 0px 0px 10px #349beb;
+}
+
+.knob::after {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: 3px solid #fff;
+	width: 130%;
+	height: 130%;
+	box-shadow: 0px 0px 10px #349beb,
+	  inset 0px 0px 10px #349beb;
+}
+
+.knob {
+	cursor: pointer;
+}
+
+.copy {
+	padding: 7px 10px;
+	font-size: 12px;
+	background: #333;
+	color: #fff;
+}
+
+.copy:hover {
+	opacity: 0.9;
+}
+
+.output-wrapper {
+	display: flex;
+	column-gap: 8px;
+}
+
+.output--container {
+	padding: 5px;
+	background: #fff;
+	border-radius: 10px;
+	border: 1px solid #333;
+	display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  min-width: 285px;
+}
+
+.output--inner {
+	width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.output {
+	margin-right: 10px;
+	align-self: center;
+}
+
+#log {
+	margin: 10px auto;
+	padding: 15px;
+	width: 100%;
+}
+
+.hidden {
+	display: none;
+}
+
+.palette-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background-color: #fff;
+  border-radius: 10px;
+	border: 1px solid #333;
+	margin-top: 10px;
+
+}
+
+.palette-swatch {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #333;
+  border-radius: 50%;
+  margin: 10px 10px;
+  background-color: lightgrey;
+}
+
+.section--upper {
+  display: flex;
+  justify-content: space-around;
+	margin-top: 2rem;
+	align-items: center;
+}
+
+.section--lower {
+  display: flex;
+  justify-content: center;
+}
