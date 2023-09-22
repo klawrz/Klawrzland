@@ -1,3 +1,142 @@
+/*
+// COLOURS
+*/
+
+/* Scheme 1 - Purple, White, Green */
+:root, .color-scheme-01 {
+  /* Background — Purple */
+  --color-background-red: 109;
+  --color-background-green: 83;
+  --color-background-blue: 202;
+  
+  /* Text — White */
+  --color-text-red: 255;
+  --color-text-green: 255;
+  --color-text-blue: 255;
+
+  /* Button Background — Green */
+  --color-button-background-red: 109;
+  --color-button-background-green: 176;
+  --color-button-background-blue: 115;
+  
+  /* Button Text — White */
+  --color-button-text-red: 255;
+  --color-button-text-green: 255;
+  --color-button-text-blue: 255;
+
+  /* Combine into variables */
+  --color-background: var(--color-background-red), var(--color-background-green), var(--color-background-blue);
+  --color-foreground: var(--color-text-red), var(--color-text-green), var(--color-text-blue);
+  --color-button-background: var(--color-button-background-red), var(--color-button-background-green), var(--color-button-background-blue);
+  --color-button-foreground: var(--color-button-text-red), var(--color-button-text-green), var(--color-button-text-blue);
+}
+
+/* Scheme 2 - Green, White, Purple */
+.color-scheme-02 {
+  /* Background — Green */
+  --color-background-red: 109;
+  --color-background-green: 176;
+  --color-background-blue: 115;
+  
+  /* Text — White */
+  --color-text-red: 255;
+  --color-text-green: 255;
+  --color-text-blue: 255;
+
+  /* Button Background — Purple */
+  --color-button-background-red: 109;
+  --color-button-background-green: 83;
+  --color-button-background-blue: 202;
+  
+  /* Button Text — White */
+  --color-button-text-red: 255;
+  --color-button-text-green: 255;
+  --color-button-text-blue: 255;
+
+  /* Combine into variables */
+  --color-background: var(--color-background-red), var(--color-background-green), var(--color-background-blue);
+  --color-foreground: var(--color-text-red), var(--color-text-green), var(--color-text-blue);
+  --color-button-background: var(--color-button-background-red), var(--color-button-background-green), var(--color-button-background-blue);
+  --color-button-foreground: var(--color-button-text-red), var(--color-button-text-green), var(--color-button-text-blue);
+}
+
+/* Scheme 3 - White, Black, Purple */
+.color-scheme-03 {
+  /* Background — White */
+  --color-background-red: 255;
+  --color-background-green: 255;
+  --color-background-blue: 255;
+  
+  /* Text — Black */
+  --color-text-red: 51;
+  --color-text-green: 51;
+  --color-text-blue: 51;
+
+  /* Button Background — Purple */
+  --color-button-background-red: 109;
+  --color-button-background-green: 83;
+  --color-button-background-blue: 202;
+  
+  /* Button Text — Black */
+  --color-button-text-red: 51;
+  --color-button-text-green: 51;
+  --color-button-text-blue: 51;
+
+  /* Combine into variables */
+  --color-background: var(--color-background-red), var(--color-background-green), var(--color-background-blue);
+  --color-foreground: var(--color-text-red), var(--color-text-green), var(--color-text-blue);
+  --color-button-background: var(--color-button-background-red), var(--color-button-background-green), var(--color-button-background-blue);
+  --color-button-foreground: var(--color-button-text-red), var(--color-button-text-green), var(--color-button-text-blue);
+}
+
+/* Scheme 4 - Black, White, Purple */
+.color-scheme-04 {
+  /* Background — Black */
+  --color-background-red: 51;
+  --color-background-green: 51;
+  --color-background-blue: 51;
+  
+  /* Text — White */
+  --color-text-red: 255;
+  --color-text-green: 255;
+  --color-text-blue: 255;
+
+  /* Button Background — Purple */
+  --color-button-background-red: 109;
+  --color-button-background-green: 83;
+  --color-button-background-blue: 202;
+  
+  /* Button Text — Black */
+  --color-button-text-red: 255;
+  --color-button-text-green: 255;
+  --color-button-text-blue: 255;
+
+  /* Combine into variables */
+  --color-background: var(--color-background-red), var(--color-background-green), var(--color-background-blue);
+  --color-foreground: var(--color-text-red), var(--color-text-green), var(--color-text-blue);
+  --color-button-background: var(--color-button-background-red), var(--color-button-background-green), var(--color-button-background-blue);
+  --color-button-foreground: var(--color-button-text-red), var(--color-button-text-green), var(--color-button-text-blue);
+}
+
+body,
+.color-scheme-01,
+.color-scheme-02,
+.color-scheme-03,
+.color-scheme-04 {
+  background-color: rgb(var(--color-background));
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+:root {
+  --alpha-button-background: 1;
+  --alpha-button-border: 1;
+}
+
+
+
+
+
+
 :root {
   --color-text-1-red: 255;
   --color-text-1-green: 255;
@@ -30,7 +169,6 @@
   --color-link-green: 255;
   --color-link-blue: 255;
 }
-
 
 :root {
   --color-text-1: var(--color-text-1-red), var(--color-text-1-green), var(--color-text-1-blue);
@@ -146,10 +284,7 @@ body,
   background-color: transparent;
 }
 
-ul.menu-inline--submenu {
-  color: rgb(var(--color-foreground));
-  background: rgb(var(--color-background));
-}
+
 
 * {
   box-sizing: inherit;
@@ -182,14 +317,39 @@ body {
   }
 }
 
+
 a {
   text-decoration: none;
 }
 
-ul {
-  margin: 0;
+.menu {
+  list-style: none;
   padding: 0;
-  display: flex;
+  margin: 0;
+}
+
+.menu-inline {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.list {
+  list-style-type: none;
+}
+
+.list-unstyled {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.submenu--disclosure {
+  position: absolute;
+  min-width: 100%;
+  width: 20rem;
+  border: 1px solid rgba(var(--color-foreground), 0.2);
+  padding: 1rem 0;
+
 }
 
 details {
@@ -198,6 +358,7 @@ details {
 
 details[open]>.header-menu--item {
   text-decoration: underline;
+  z-index: 1;
 }
 
 details[open]>.header-menu--item .icon-caret {
@@ -215,6 +376,7 @@ summary .icon-caret {
   right: 1.5rem;
   top: calc(50% - 0.2rem);
 }
+
 
 summary.list--item {
   padding-right: 2.7rem;
@@ -237,13 +399,10 @@ summary.list--item {
   text-decoration: none;
   min-width: calc(12rem + 1px * 2);
   min-height: calc(4.5rem + 1px * 2);
-  color: rgb(var(--color-button-text));
-  background-color: rgba(var(--color-button), var(--alpha-button-background));
+  color: rgb(var(--color-button-foreground));
+  background-color: rgba(var(--color-button-background), var(--alpha-button-background));
 }
 
-.list {
-  list-style-type: none;
-}
 
 .link {
   cursor: pointer;
@@ -323,6 +482,7 @@ summary.list--item {
 .page-width {
   padding: 0 5rem;
   margin: 0 auto;
+  max-width: 1200px;
 }
 
 @media only screen and (min-width: 750px) {
@@ -543,15 +703,6 @@ h5,
   align-items: center;
 }
 
-.menu-inline--submenu {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  border: 1px solid rgba(51, 51, 51, 0.2);
-  padding: 2.4rem 0;
-  width: 70rem;
-  z-index: 1;
-}
 
 .title {
   grid-area: "title";
@@ -671,10 +822,13 @@ h5,
 
 .footer-heading {
   font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 2rem;
 }
 
 .footer-top {
   align-items: center;
+  padding-bottom: 5rem;
 }
 
 .footer-menu--list {
@@ -696,6 +850,34 @@ h5,
 .footer-bottom {
   padding-top: 3rem;
   border-top: 1px solid rgba(51, 51, 51, 0.2);
+}
+
+.footer-block--newsletter-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  margin-top: 3rem;
+  gap: 1rem;
+}
+
+.footer-block--newsletter {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.form--newsletter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 36rem;
+}
+
+.newsletter--field-wrapper {
+  max-width: 36rem;
 }
 
 .contact, .about {
