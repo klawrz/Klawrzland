@@ -13,6 +13,10 @@ app.set('views', path.join(__dirname, 'views'));
 const projects = require('./projects');
 app.use('/projects', projects);
 
+// Services router
+const services = require('./services');
+app.use('/services', services);
+
 // Home
 app.get('/', (req, res) => {
   res.render('index');
