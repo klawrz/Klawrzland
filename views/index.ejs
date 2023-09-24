@@ -1,71 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/styles/main.css"/>
-  <title>Klawrzland</title>
-</head>
+<div class="hidden ascii-art center">
+  <p> Congrats, this is an egg!
+                                                                            
+                                                                        
+                                                                        
+                              ████████                                  
+                            ██        ██                                
+                          ██▒▒▒▒        ██                              
+                        ██▒▒▒▒▒▒      ▒▒▒▒██                            
+                        ██▒▒▒▒▒▒      ▒▒▒▒██                            
+                      ██  ▒▒▒▒        ▒▒▒▒▒▒██                          
+                      ██                ▒▒▒▒██                          
+                    ██▒▒      ▒▒▒▒▒▒          ██                        
+                    ██      ▒▒▒▒▒▒▒▒▒▒        ██                        
+                    ██      ▒▒▒▒▒▒▒▒▒▒    ▒▒▒▒██                        
+                    ██▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒██                        
+                      ██▒▒▒▒  ▒▒▒▒▒▒    ▒▒▒▒██                          
+                      ██▒▒▒▒            ▒▒▒▒██                          
+                        ██▒▒              ██                            
+                          ████        ████                              
+                              ████████                                  
+                                                                        
+                                                                        
+                                                                        
 
-<body id="index">
+  </p>
+</div>
 
-  <div class="hidden ascii-art center">
-    <p> Congrats, this is an egg!
-                                                                              
-                                                                          
-                                                                          
-                                ████████                                  
-                              ██        ██                                
-                            ██▒▒▒▒        ██                              
-                          ██▒▒▒▒▒▒      ▒▒▒▒██                            
-                          ██▒▒▒▒▒▒      ▒▒▒▒██                            
-                        ██  ▒▒▒▒        ▒▒▒▒▒▒██                          
-                        ██                ▒▒▒▒██                          
-                      ██▒▒      ▒▒▒▒▒▒          ██                        
-                      ██      ▒▒▒▒▒▒▒▒▒▒        ██                        
-                      ██      ▒▒▒▒▒▒▒▒▒▒    ▒▒▒▒██                        
-                      ██▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒██                        
-                        ██▒▒▒▒  ▒▒▒▒▒▒    ▒▒▒▒██                          
-                        ██▒▒▒▒            ▒▒▒▒██                          
-                          ██▒▒              ██                            
-                            ████        ████                              
-                                ████████                                  
-                                                                          
-                                                                          
-                                                                          
+<div class="special-welcome center color-accent-1 section-padding page-width hidden">
+  <h1>Hello Gatarn Games!</h1>
+  <p>Take a look around and enjoy yourselves while playing Sandbox, Blockbreaker, and Glorf's Quest</p>
+  <p>I created Glorf's Quest with no prior coding knowledge many years ago</p>
+  <p>Sandbox is a new iteration of Glorf's Quest with optimized code, it runs a lot smoother and makes way more sense</p>
+  <p>Can't make that jump in Glorf? No sweat — try your hand at Etch-a-Sketch, make a new shade in Colour Picker, or draw something hilarious in PAINT!</p>
+</div>
 
-    </p>
-  </div>
+<div class="rich-text color-scheme-03 center hidden">
+  <h2>PROJECTS<h2>
+</div>
 
-  <div id="announcement-bar" class="color-background-2">
-    <p class="announcement-bar--message h5">Welcome to Klawrzland</p>
-  </div>
-
-  <div id="index-header">
-    <%- include('partials/_header'); %>
-  </div>
-
-  
-
-  <main id="index-main" role="main" class="">
-    <div class="special-welcome center color-accent-1 section-padding page-width hidden">
-      <h1>Hello Gatarn Games!</h1>
-      <p>Take a look around and enjoy yourselves while playing Sandbox, Blockbreaker, and Glorf's Quest</p>
-      <p>I created Glorf's Quest with no prior coding knowledge many years ago</p>
-      <p>Sandbox is a new iteration of Glorf's Quest with optimized code, it runs a lot smoother and makes way more sense</p>
-      <p>Can't make that jump in Glorf? No sweat — try your hand at Etch-a-Sketch, make a new shade in Colour Picker, or draw something hilarious in PAINT!</p>
-    </div>
-    <div class="rich-text color-scheme-03 center hidden">
-      <h2>PROJECTS<h2>
-    </div>
-    <%- include('partials/_content'); %>
-  </main>
-
-  <div id="index-footer" class="">
-    <%- include('partials/_footer'); %>
-  </div>
-
-  <script src="/scripts/main.js"></script>
-</body>
-</html>
+<%- include('partials/content'); %>

@@ -1,45 +1,33 @@
+<div class="contact contact--wrapper page-width page-width--narrow">
+  <div class="page-title--container">
+    <h1 class="page-title">CONTACT</h1>
+  </div>
 
-<html>
-  <head>
-    <link href="/styles/main.css" rel="stylesheet" />
-  </head>
-  <body id="contact">
-    <%- include('partials/_header'); %> 
+  <form action="" class="contact-form">
 
-    <div class="contact contact--wrapper page-width page-width--narrow">
-      <div class="page-title--container">
-        <h1 class="page-title">CONTACT</h1>
+    <div class="contact-fields">
+      <div class="field">
+        <input id="contact_name" type="text" class="field-input" name="contact[name]">
+        <label for="contact_name" class="field-label">Name</label>
       </div>
-
-      <form action="" class="contact-form">
-
-        <div class="contact-fields">
-          <div class="field">
-            <input id="contact_name" type="text" class="field-input" name="contact[name]">
-            <label for="contact_name" class="field-label">Name</label>
-          </div>
-          <div class="field">
-            <input id="contact_email" type="email" class="field-input" name="contact[email]" autocomplete="email" spellcheck="false" autocapitalize="off" required>
-            <label for="contact_email" class="field-label">Email <span aria-hidden="true">*</span></label>
-          </div>
-        </div>
-
-        <div class="field">
-          <input id="contact_phone" type="text" class="field-input" autocomplete="tel" name="contact[phone]" pattern="[0-9\-]*">
-          <label for="contact_phone" class="field-label">Phone Number</label>
-        </div>
-
-        <div class="field">
-          <textarea id="contact_message" rows="10" class="text-area field-input" name="contact[message]"></textarea>
-          <label for="contact_message" class="field-label">Message</label>
-        </div>
-
-        <div class="contact-button">
-          <button type="submit" class="button">Send</button>
-        </div>
-      </form>
+      <div class="field">
+        <input id="contact_email" type="email" class="field-input" name="contact[email]" autocomplete="email" spellcheck="false" autocapitalize="off" required>
+        <label for="contact_email" class="field-label">Email <span aria-hidden="true">*</span></label>
+      </div>
     </div>
 
-    <%- include('partials/_footer'); %> 
-  </body>
-</html>
+    <div class="field">
+      <input id="contact_phone" type="text" class="field-input" autocomplete="tel" name="contact[phone]" pattern="[0-9\-]*">
+      <label for="contact_phone" class="field-label">Phone Number</label>
+    </div>
+
+    <div class="field">
+      <textarea id="contact_message" rows="10" class="text-area field-input" name="contact[message]"></textarea>
+      <label for="contact_message" class="field-label">Message</label>
+    </div>
+
+    <div class="contact-button">
+      <button type="submit" class="button">Send</button>
+    </div>
+  </form>
+</div>

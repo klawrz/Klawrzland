@@ -1,37 +1,23 @@
-<!DOCTYPE html>
-<html>
-  <head>
-  	<title>Etch-a-Sketch</title>
-    <link href="/styles/main.css" rel="stylesheet" />
-    <link href="/styles/etch-a-sketch.css" rel="stylesheet" />
-  </head>
-  <body id="etch-a-sketch">
-    <%- include('partials/_header'); %> 
+<div class="etch-a-sketch--wrapper color-background-1" width="900px">
 
-  	<div class="etch-a-sketch--wrapper color-background-1" width="900px">
+  <strong class="etch-a-sketch--heading">Etch - A - Sketch</strong>
 
-      <strong class="etch-a-sketch--heading">Etch - A - Sketch</strong>
+  <canvas id="canvas" width="900px" height="600px"></canvas>
+  
+  <div class="knobs-container">
 
-  	  <canvas id="canvas" width="900px" height="600px"></canvas>
-      
-      <div class="knobs-container">
-
-        <div class="knob-background dial dial-left">
-          <div class="slider">
-            <div id="knob1" class="knob h5"></div>
-          </div>
-        </div>
-
-        <div class="knob-background dial dial-right">
-          <div class="slider">
-            <div id="knob2" class="knob h5"></div>
-          </div>
-        </div>
-
+    <div class="knob-background dial dial-left">
+      <div class="slider">
+        <div id="knob1" class="knob h5"></div>
       </div>
     </div>
-  	<script src="/scripts/etch-a-sketch.js"></script>
 
-    <%- include('partials/_footer'); %> 
-  </body>
-</html>
+    <div class="knob-background dial dial-right">
+      <div class="slider">
+        <div id="knob2" class="knob h5"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script src="/scripts/etch-a-sketch.js"></script>

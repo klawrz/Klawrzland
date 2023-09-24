@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles/main.css"/>
+  <title>Klawrzland</title>
+</head>
+
+<body id="index">
+
+  <div id="announcement-bar" class="color-background-2">
+    <p class="announcement-bar--message h5">Welcome to Klawrzland</p>
+  </div>
+
+  <%- defineContent('header') %>
+  <%- include('partials/header'); %>
+
+  <main id="mainContent" role="main" class="" tabindex="-1">
+    <%- body %>
+  </main>
+
+  <%- defineContent('footer') %>
+  <%- include('partials/footer'); %>
+
+  <script src="/scripts/main.js"></script>
+</body>
+</html>
