@@ -1,20 +1,26 @@
-<div class="glorf--wrapper color-accent-1 section-padding">
+<link href="/styles/glorf.css" rel="stylesheet" />
 
-  <div class="controls">
-    <h2 class="center">CONTROLS</h2>
-    <p><strong>MOVE: </strong>A, D, LEFT, RIGHT</p>
-    <p><strong>JUMP: </strong>SPACE, W, UP</p>
-    <p><strong>SHOOT: </strong>C, P</p>
+<div id="glorf">
+  <div class="glorf--wrapper color-accent-1 section-padding">
+
+    <div class="controls">
+      <h2 class="center">CONTROLS</h2>
+      <p><strong>MOVE: </strong>A, D, LEFT, RIGHT</p>
+      <p><strong>JUMP: </strong>SPACE, W, UP</p>
+      <p><strong>SHOOT: </strong>C, P</p>
+    </div>
+
+    <div class="game center">
+      <canvas id="level" class="game-viewport" width="640" height="360"></canvas>
+      <audio id="theme" src="/assets/theme.wav"></audio>
+      <script src="/scripts/glorf.js"></script>
+    </div>
+
+    <div class="score center">
+      <h2>SCORE</h2>
+    </div>
+
   </div>
-
-  <div class="game center">
-    <canvas id="level" class="game-viewport" width="640" height="360"></canvas>
-    <audio id="theme" src="/assets/theme.wav"></audio>
-    <script src="/scripts/glorf.js"></script>
-  </div>
-
-  <div class="score center">
-    <h2>SCORE</h2>
-  </div>
-
 </div>
+
+<script src="/scripts/glorf.js"></script>

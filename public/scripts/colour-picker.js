@@ -750,6 +750,8 @@ function rotate(e) {
 
 function handleClick(e) {
 
+  console.log('click');
+
   const target = e.target;
 	
 	// Copy buttons

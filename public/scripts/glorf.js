@@ -37,7 +37,7 @@ doorImage.src = "/assets/door.png";
 
 //Sounds & Volume
 var jumpSfx = new Audio("/assets/jump.mp3");
-var keySfx = new Audio("/assets/key.wav");
+var keySfx = new Audio("/assets/collect.wav");
 var winSfx = new Audio("/assets/win.wav");
 var deadSfx = new Audio("/assets/dead.ogg");
 var theme = document.getElementById("theme");
