@@ -2,6 +2,13 @@
 // COLOURS
 */
 
+/*
+  purple: #8500ec rgb(133, 0, 236)
+  new purple: #6d53ca rgb(109, 83, 202)
+  green: #20df20 rgb(32, 223, 32)
+  turquoise: #21e7e7 rgb(33, 231, 231)
+*/
+
 /* Scheme 1 - Purple, White, Green */
 :root, .color-scheme-01 {
   /* Background — Purple */
@@ -130,149 +137,6 @@ body,
 :root {
   --alpha-button-background: 1;
   --alpha-button-border: 1;
-}
-
-
-
-
-
-
-:root {
-  --color-text-1-red: 255;
-  --color-text-1-green: 255;
-  --color-text-1-blue: 255;
-
-  --color-text-2-red: 24;
-  --color-text-2-green: 24;
-  --color-text-2-blue: 24;
-  
-  /* purple */
-  --color-background-1-red: 109;
-  --color-background-1-green: 83;
-  --color-background-1-blue: 202;
-
-  /* green */
-  --color-background-2-red: 109;
-  --color-background-2-green: 176;
-  --color-background-2-blue: 115;
-  
-  /* charcoal */
-  --color-accent-1-red: 51;
-  --color-accent-1-green: 51;
-  --color-accent-1-blue: 51;
-
-  --color-accent-2-red: 109;
-  --color-accent-2-green: 83;
-  --color-accent-2-blue: 202;
-
-  --color-link-red: 255;
-  --color-link-green: 255;
-  --color-link-blue: 255;
-}
-
-:root {
-  --color-text-1: var(--color-text-1-red), var(--color-text-1-green), var(--color-text-1-blue);
-  --color-text-2: var(--color-text-2-red), var(--color-text-2-green), var(--color-text-2-blue);
-  --color-background-1: var(--color-background-1-red), var(--color-background-1-green), var(--color-background-1-blue);
-  --color-background-2: var(--color-background-2-red), var(--color-background-2-green), var(--color-background-2-blue);
-  --color-accent-1: var(--color-accent-1-red), var(--color-accent-1-green), var(--color-accent-1-blue);
-  --color-accent-2: var(--color-accent-2-red), var(--color-accent-2-green), var(--color-accent-2-blue);
-  --color-link: var(--color-link-red), var(--color-link-green), var(--color-link-blue);
-}
-
-/* Hex codes for reference
-:root {
-  --color-text-1: #333;
-  --color-text-2: #fff;
-  --color-background-1: #fff;
-  --color-background-2: #333;
-  --color-accent-1: #02c502;
-  --color-accent-2: #21E7E7;
-  --color-link: #333;
-}
-
-  purple: #8500ec rgb(133, 0, 236)
-  new purple: #6d53ca rgb(109, 83, 202)
-  green: #20df20 rgb(32, 223, 32)
-  turquoise: #21e7e7 rgb(33, 231, 231)
-*/
-
-:root,
-.color-background-1 {
-  --color-foreground: var(--color-text-1);
-  --color-background: var(--color-background-1);
-}
-
-.color-background-2 {
-  --color-foreground: var(--color-text-2);
-  --color-background: var(--color-background-2);
-}
-
-.color-accent-1 {
-  --color-foreground: var(--color-text-1);
-  --color-background: var(--color-accent-1);
-}
-
-.color-accent-2 {
-  --color-foreground: var(--color-text-2);
-  --color-background: var(--color-accent-2);
-}
-
-.color-inverse {
-  --color-foreground: var(--color-background-1);
-  --color-background: var(--color-text-1);
-}
-
-.color-foreground-accent-1 {
-  --color-foreground: var(--color-accent-1);
-}
-
-.color-foreground-accent-2 {
-  --color-foreground: var(--color-accent-2);
-}
-
-.color-foreground-link {
-  --color-foreground: var(--color-link);
-}
-
-:root,
-.color-background-1 {
-  --color-anchor: var(--color-link);
-  --alpha-anchor: 0.85;
-}
-
-.color-background-2,
-.color-accent-1,
-.color-accent-2,
-.color-inverse {
-  --color-anchor: var(--color-foreground);
-  --alpha-anchor: 0.7;
-}
-
-:root,
-.color-background-1 {
-  --color-button: var(--color-accent-1);
-  --color-button-text: var(--color-link);
-  --alpha-button-background: 1;
-  --alpha-button-border: 1;
-}
-
-.color-background-2,
-.color-accent-1,
-.color-accent-2,
-.color-inverse {
-  --color-button: var(--color-foreground);
-  --color-button-text: var(--color-background);
-}
-
-body,
-.color-background-1,
-.color-background-2,
-.color-accent-1,
-.color-accent-2,
-.color-inverse {
-  color: rgba(var(--color-foreground), 0.75);
-  background-color: rgb(var(--color-background));
 }
 
 .background-secondary {
