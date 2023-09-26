@@ -29,6 +29,13 @@ Colour Picker:
 - Colour picker output-container min-width is still too small to support max CMYK values
 - Little clipboard icon that appears on hover to copy colour instead of inline copy button taking up room
 - Fix mouseleave vs mouseout
+- Dynamically generate swatches
+- Local storage:
+  - When page loads, each palette swatch should be coloured according to local storage if it exists
+  - For each swatch, we should get the index of its node within the parent Palette element
+  - The local storage should store the colour of each swatch at the correct index (0-8)
+  - When a swatch is clicked, the local storage should update for that specific index
+
 
 
 
