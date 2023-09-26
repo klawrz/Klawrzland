@@ -73,31 +73,31 @@ let swatchId;
 */
 
 class Swatch {
-  constructor(id) {
+  constructor(id, color, status) {
     //super();
     this.id = id;
-    this.backgroundColor = 'lightgrey';
-    this.status = false;
+    this.color = color;
+    this.status = status;
   }
 
   set(target) {
     // Set swatch background as page background,+ update local storage
-    this.backgroundColor = body.style.backgroundColor || initialColor;
+    this.color = body.style.backgroundColor || initialColor;
 
     // Toggle status 
     this.status = true;
     
-    target.style.backgroundColor = this.backgroundColor;
-    console.log("swatch color set!")
+    target.style.backgroundColor = this.color;
+    this.setLocalStorage();
   }
 
   clear(target) {
     // Clear: If swatch background matches page background, clear swatch (set swatch background to 'lightgrey', toggle status) + update local storage
-    this.backgroundColor = 'lightgrey';
+    this.color = 'lightgrey';
     this.status = false;
 
-    target.style.backgroundColor = this.backgroundColor;
-    console.log("swatch cleared!")
+    target.style.backgroundColor = this.color;
+    this.setLocalStorage();
   }
 
   apply(target) {
@@ -111,14 +111,13 @@ class Swatch {
 
     // Change background
     body.style.backgroundColor = newColor;
-
-    console.log("Applying swatch color to page")
   }
 
   render() {
     const swatch = document.createElement('div');
     swatch.classList.add('swatch');
     swatch.setAttribute('id', this.id);
+    swatch.style.backgroundColor = this.color;
 
     const palette = document.querySelector('.palette-container');
     palette.appendChild(swatch);
@@ -149,9 +148,11 @@ class Swatch {
      // Update elements
      updateElements();
   }
-}
 
-//customElements.define('color-swatch', Swatch);
+  setLocalStorage() {
+    localStorage.setItem("palette", JSON.stringify(swatches));
+  }
+}
 
 
 /*
@@ -165,7 +166,7 @@ function logValues() {
   console.log(`cmyk(${cyan}, ${magenta}%, ${yellow}%, ${black})`);
 	console.log(`mode: ${mode}`);
 	console.log(`pos360: ${pos360}`)
-	console.log(`result: ${result}`)
+	//console.log(`result: ${result}`)
 }
 
 // Initialize the program
@@ -191,64 +192,34 @@ function init() {
 	rgbOutputValue = 'rgb(0, 255, 0)';
   cmykOutputValue = 'cmyk(100%, 0%, 100%, 0%)';
 
-  if(!localStorage.getItem("palette")) initPalette();
+  let palette = localStorage.getItem("palette");
+  
+  if (palette) 
+    setPalette(JSON.parse(palette))
+  else 
+   initPalette();
 
 	updateKnobsPos();
 }
 
-
-
-
-
-
-
-
-
-
-
 function initPalette() {
- 
   swatchId = 0;
   
   let swatchCount = 9;
 
-
   for (i = 0; i < swatchCount; i++) {
-    swatches.push(new Swatch(swatchId++));
+    swatches.push(new Swatch(swatchId++, 'lightgrey', false));
     swatches[i].render();
   }
-
-  console.log(swatches);
-  
 }
 
+function setPalette(palette) {
+  palette.forEach((swatch, index) => {
+    swatches[index] = new Swatch(swatch.id, swatch.color, swatch.status);
+  });
 
-
-
-
-
-
-
-
-
-function setPalette() {
-
-  const paletteStorage = JSON.parse(localStorage.getItem("palette"));
-  const paletteNodes = Array.from(palette.children);
-  const paletteColors = 
-  // Create an array that holds the colour of each circle
-  //   - On the user's first visit, the circles should all be coloured 'lightgrey'
-  //   - After they click a circle, it changes colour to match the background, or back to lightgrey if the circle colour matches background colour
-  // We need to fill the colour of 9 circles
-  // When we
-
-
-  
-  paletteNodes.forEach((node, index) => {
-    if (!paletteStorage) 
-      node.style.backgroundColor = 'lightgrey';
-    else 
-      node.style.backgroundColor = paletteColors[index];
+  swatches.forEach((swatch) => {
+    swatch.render();
   });
 }
 
@@ -376,16 +347,11 @@ function updateElements() {
 function handleSwatch(e) {
   const target = e.target;
   const id = parseInt(target.getAttribute('id'));
-  const pageBackground = body.style.backgroundColor || initialColor;
-  const swatchBackground = swatches[id].backgroundColor;
-  console.log(swatches[id])
-
-  console.log(`page background: ${pageBackground}`)
-  console.log(`swatch background: ${swatchBackground}`)
-  console.log(`status: ${swatches[id].status}`)
+  const pageColor = body.style.backgroundColor || initialColor;
+  const swatchColor= swatches[id].color;
 
   if (swatches[id].status) 
-    if (swatchBackground == pageBackground) 
+    if (swatchColor == pageColor) 
       // Clear: If swatch background matches page background, clear swatch (set swatch background to 'lightgrey', toggle status) + update local storage
       swatches[id].clear(target);
     else
