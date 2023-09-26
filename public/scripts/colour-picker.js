@@ -11,17 +11,22 @@
 */
 
 
-// Global scope
+/*
+// GLOBALS
+*/
+
 var rad, deg, pos360;
 
 var mode, hexOutputValue, hslOutputValue, rgbOutputValue, cmykOutputValue;
 
 var hue, saturation, lightness, red, green, blue, cyan, magenta, yellow, black;
 
+const initialColor = 'rgb(0, 255, 0)'; // green
 
-//
-/// Selectors
-//
+
+/*
+/// SELECTORS
+*/
 
 // Get reference to <body> element to change background colour with knobs
 const body = document.querySelector('#colour-picker');
@@ -58,10 +63,100 @@ const hslOutput  = document.querySelector('#hsl-output');
 const rgbOutput  = document.querySelector('#rgb-output');
 const cmykOutput  = document.querySelector('#cmyk-output');
 
+// Palette
+const swatches = [];
+let swatchId;
 
-//
-/// Functions
-//
+
+/*
+// CLASSES
+*/
+
+class Swatch {
+  constructor(id) {
+    //super();
+    this.id = id;
+    this.backgroundColor = 'lightgrey';
+    this.status = false;
+  }
+
+  set(target) {
+    // Set swatch background as page background,+ update local storage
+    this.backgroundColor = body.style.backgroundColor || initialColor;
+
+    // Toggle status 
+    this.status = true;
+    
+    target.style.backgroundColor = this.backgroundColor;
+    console.log("swatch color set!")
+  }
+
+  clear(target) {
+    // Clear: If swatch background matches page background, clear swatch (set swatch background to 'lightgrey', toggle status) + update local storage
+    this.backgroundColor = 'lightgrey';
+    this.status = false;
+
+    target.style.backgroundColor = this.backgroundColor;
+    console.log("swatch cleared!")
+  }
+
+  apply(target) {
+    // Apply: If status is true, AND the page background is different from this, apply this color to the page background and update all values/visuals
+    
+    // Store swatch colour in variable
+    let newColor = target.style.backgroundColor;
+
+    // Update values
+    this.update(newColor);
+
+    // Change background
+    body.style.backgroundColor = newColor;
+
+    console.log("Applying swatch color to page")
+  }
+
+  render() {
+    const swatch = document.createElement('div');
+    swatch.classList.add('swatch');
+    swatch.setAttribute('id', this.id);
+
+    const palette = document.querySelector('.palette-container');
+    palette.appendChild(swatch);
+  }
+  
+  update(color) {
+    
+     // Get array of integers from RGB string
+     let r, g, b; 
+     [r, g, b] = getRGB(color);
+ 
+     // Update global value of Red, Green, and Blue
+     setRGB(r, g, b);
+ 
+     // Update output values
+     rgbOutputValue = `rgb(${red}, ${green}, ${blue})`;
+     rgbOutput.textContent = rgbOutputValue;
+ 
+     hexOutputValue = rgbToHex(red, green, blue);
+     hexOutput.textContent = hexOutputValue;
+ 
+     hslOutputValue = rgbToHSL(red, green, blue);
+     hslOutput.textContent = hslOutputValue;
+ 
+     cmykOutputValue = rgbToCMYK(red, green, blue);
+     cmykOutput.textContent = cmykOutputValue;
+ 
+     // Update elements
+     updateElements();
+  }
+}
+
+//customElements.define('color-swatch', Swatch);
+
+
+/*
+// FUNCTIONS
+*/
 
 // For debugging
 function logValues() {
@@ -96,7 +191,65 @@ function init() {
 	rgbOutputValue = 'rgb(0, 255, 0)';
   cmykOutputValue = 'cmyk(100%, 0%, 100%, 0%)';
 
+  if(!localStorage.getItem("palette")) initPalette();
+
 	updateKnobsPos();
+}
+
+
+
+
+
+
+
+
+
+
+
+function initPalette() {
+ 
+  swatchId = 0;
+  
+  let swatchCount = 9;
+
+
+  for (i = 0; i < swatchCount; i++) {
+    swatches.push(new Swatch(swatchId++));
+    swatches[i].render();
+  }
+
+  console.log(swatches);
+  
+}
+
+
+
+
+
+
+
+
+
+
+function setPalette() {
+
+  const paletteStorage = JSON.parse(localStorage.getItem("palette"));
+  const paletteNodes = Array.from(palette.children);
+  const paletteColors = 
+  // Create an array that holds the colour of each circle
+  //   - On the user's first visit, the circles should all be coloured 'lightgrey'
+  //   - After they click a circle, it changes colour to match the background, or back to lightgrey if the circle colour matches background colour
+  // We need to fill the colour of 9 circles
+  // When we
+
+
+  
+  paletteNodes.forEach((node, index) => {
+    if (!paletteStorage) 
+      node.style.backgroundColor = 'lightgrey';
+    else 
+      node.style.backgroundColor = paletteColors[index];
+  });
 }
 
 
@@ -220,6 +373,28 @@ function updateElements() {
 
 }
 
+function handleSwatch(e) {
+  const target = e.target;
+  const id = parseInt(target.getAttribute('id'));
+  const pageBackground = body.style.backgroundColor || initialColor;
+  const swatchBackground = swatches[id].backgroundColor;
+  console.log(swatches[id])
+
+  console.log(`page background: ${pageBackground}`)
+  console.log(`swatch background: ${swatchBackground}`)
+  console.log(`status: ${swatches[id].status}`)
+
+  if (swatches[id].status) 
+    if (swatchBackground == pageBackground) 
+      // Clear: If swatch background matches page background, clear swatch (set swatch background to 'lightgrey', toggle status) + update local storage
+      swatches[id].clear(target);
+    else
+      // Apply: If status is true, AND the page background is different from this, apply this color to the page background and update all values/visuals
+      swatches[id].apply(target);
+  else
+    // Set: If swatch status is false, set swatch background as page background, toggle status + update local storage
+    swatches[id].set(target);
+}
 
 //
 /// Mode functions
@@ -308,6 +483,42 @@ function updateKnobsPos() {
 	});
 }
 
+function setHSL(h, s, l) {
+  hue = h;
+  saturation = s;
+  lightness = l;
+}
+
+function setRGB(r, g, b) {
+  red = r;
+  green = g;
+  blue = b;
+}
+
+function setCMYK(c, m, y, k) {
+  cyan = c;
+  magenta = m;
+  yellow = y;
+  black = k;
+}
+
+function getRGB(string) {
+  string = string.replace('rgb(', '').replaceAll(' ','').replace(')', '');
+  string = string.split(',');
+
+  let ints = string.map((item) => {
+    return parseInt(item);
+  });
+
+  let r = ints[0];
+  let g = ints[1];
+  let b = ints[2];
+
+  let rgb = [r, g, b];
+
+  return rgb;
+}
+
 //
 /// Colour conversion functions
 //
@@ -372,9 +583,7 @@ function rgbToHSL(r, g, b) {
 	s = Math.floor(s);
 	l = Math.floor(l);
 
-	hue = h;
-	saturation = s;
-	lightness = l;
+	setHSL(h, s, l);
 
 	//return "hsl(" + h + ", " + s + "%, " + l + "%)";
   return `hsl(${h}, ${s}%, ${l}%)`;
@@ -407,10 +616,7 @@ function rgbToCMYK(r, g, b) {
   y = Math.floor(y * 100);
   k = Math.floor(k * 100);
 
-  cyan = c;
-  magenta = m;
-  yellow = y;
-  black = k;
+  setCMYK(c, m, y, k);
 
   return `cmyk(${c}%, ${m}%, ${y}%, ${k}%)`;
 }
@@ -549,9 +755,7 @@ function cmykToRGB(c, m, y, k) {
   g = Math.floor(255 * (1 - m / 100) * (1 - k / 100));
   b = Math.floor(255 * (1 - y / 100) * (1 - k / 100));
   
-  red = r;
-  green = g;
-  blue = b;
+  setRGB(r, g, b);
 
   return `rgb(${r}, ${g}, ${b})`;
 }
@@ -773,8 +977,8 @@ function handleClick(e) {
 	}
 
   // Palette swatches
-  if (target.matches('.palette-swatch')) {
-    target.style.backgroundColor = hexOutputValue;
+  if (target.matches('.swatch')) {
+    handleSwatch(e);
   }
 
 	// Debug
