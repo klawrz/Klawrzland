@@ -49,9 +49,14 @@
 }
 
 .output--container h5 {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	color: var(--color-text-2);
+	margin: 0;
+  align-self: center;
+}
+
+.output-top {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .pill {
@@ -178,7 +183,6 @@ button:active {
 }
 
 .copy {
-	padding: 7px 10px;
 	font-size: 12px;
 	background: #333;
 	color: #fff;
@@ -212,8 +216,7 @@ button:active {
 }
 
 .output {
-	margin-right: 10px;
-	align-self: center;
+	align-self: flex-start;
 }
 
 #log {
