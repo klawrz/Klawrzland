@@ -19,6 +19,25 @@
 	font-size: 1rem;
 }
 
+.colour-picker--container {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-areas: "sidebar main-area";
+  width: 100%;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.main-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .mode-container h2 {
 	text-align: center;
 	background-color: #fff;
@@ -47,11 +66,10 @@
 
 .buttons-wrapper {
   display: flex;
-	column-gap: 8px;
 }
 
 button {
-	padding: 15px 32px;
+	padding: 1rem;
 	border: none;
 	font-size: 16px;
 	border-radius: 10px;
@@ -65,7 +83,7 @@ button {
 }
 
 .mode-button {
-  width: 50%;
+  width: 33.33%;
 }
 
 .mode-button:not(.selected) {
@@ -171,7 +189,7 @@ button:active {
 
 .output-wrapper {
 	display: flex;
-	column-gap: 8px;
+  flex-direction: column;
 }
 
 .output--container {
@@ -182,7 +200,7 @@ button:active {
 	display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10px;
+  margin-bottom: 1rem;
   min-width: 285px;
 }
 
@@ -209,31 +227,17 @@ button:active {
 
 .palette-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template: repeat(3, fit-content(30%)) / repeat(3, fit-content(30%));
+  gap: 1rem;
   background-color: #fff;
   border-radius: 10px;
 	border: 1px solid #333;
-	margin-top: 10px;
-
 }
 
 .swatch {
-  width: 50px;
-  height: 50px;
+  width: 6rem;
+  height: 6rem;
   border: 2px solid #333;
   border-radius: 50%;
-  margin: 10px 10px;
-  background-color: lightgrey;
-}
-
-.section--upper {
-  display: flex;
-  justify-content: space-around;
-	margin-top: 2rem;
-	align-items: center;
-}
-
-.section--lower {
-  display: flex;
-  justify-content: center;
+  margin: 1rem;
 }
