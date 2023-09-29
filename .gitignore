@@ -2,7 +2,7 @@
 node_modules
 
 # Developer task tracking
-todo
+todo.md
 
 # Apple system files
 .DS_Store
