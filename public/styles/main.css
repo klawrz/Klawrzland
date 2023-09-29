@@ -363,7 +363,7 @@ summary.list--item {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .transparent {
