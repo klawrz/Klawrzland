@@ -64,20 +64,111 @@ const rgbOutput  = document.querySelector('#rgb-output');
 const cmykOutput  = document.querySelector('#cmyk-output');
 
 // Palette
-const swatches = [];
-let swatchId;
+const palettes = [];
+let activePalette = {};
 
 
 /*
 // CLASSES
 */
 
+class Palette {
+  static #lastID = 0;
+  static maxSwatches = 9;
+  id;
+
+  constructor() {
+    this.id = `palette-${++Palette.#lastID}`;
+    this.swatches = [];
+    this.update();
+    this.create();
+    this.render();
+    this.element = this.getElement();
+    this.setActive();
+  }
+
+  setActive() {
+    // Disable/hide other palettes
+    palettes.forEach((palette) => {
+      if (palette == this) return;
+      palette.element.classList.add('hidden');
+    });
+
+    this.element.classList.remove('hidden');
+    activePalette = this;
+  }
+
+  create() {
+    palettes.push(this);
+  }
+
+  delete() {
+    // Prevent deleting last palette
+    if (palettes.length == 1) return;
+
+    // Set next palette as active, or previous palette if we are on the final one
+    const next = palettes[palettes.indexOf(this) + 1] ? palettes[palettes.indexOf(this) + 1].setActive() : palettes[palettes.indexOf(this) - 1].setActive();
+
+    // Destroy the DOM element and object instance
+    this.element.remove();
+    palettes.splice(palettes.indexOf(this), 1);
+  }
+
+  next() {
+    const nextPalette = palettes[palettes.indexOf(this) + 1] || palettes[0];
+    nextPalette.setActive();
+  }
+
+  previous() {
+    const previousPalette = palettes[palettes.indexOf(this) - 1] || palettes[palettes.length - 1];
+    previousPalette.setActive();
+  }
+
+  render() {
+    const palette = document.createElement('div');
+    palette.classList.add('palette');
+    palette.setAttribute('id', this.id);
+    
+    const paletteContainer = document.querySelector('.palette-container');
+    paletteContainer.appendChild(palette);
+  }
+
+  update() {
+    // Set palette title
+    const titleElement = document.querySelector('.palette-title');
+    titleElement.textContent = `Palette ${this.id.replace('palette-', '')}`;
+  }
+
+  initSwatches() {
+    // Fill the palette up with blank swatches
+    while (this.swatches.length < Palette.maxSwatches) {
+      // Color defaults to 'lightgrey' when unspecified
+      this.addSwatch(this.id, false);
+    }
+  }
+
+  addSwatch(paletteId, status, color = 'lightgrey') {
+    this.swatches.push(new Swatch(paletteId, status, color));
+  }
+
+  getElement() {
+    const palette = document.querySelector(`#${this.id}`);
+    return palette;
+  }
+}
+
 class Swatch {
-  constructor(id, color, status) {
-    //super();
-    this.id = id;
+  static #lastID = 0; // shared across all instances
+  id;
+
+  constructor(paletteID, status, color) {
+    this.id = `swatch-${++Swatch.#lastID}`;
+    this.paletteID = paletteID;
     this.color = color;
     this.status = status;
+    this.render(this.paletteID);
+    this.element = this.getElement();
+    this.palette = this.getPaletteElement();
   }
 
   set(target) {
@@ -113,13 +204,13 @@ class Swatch {
     body.style.backgroundColor = newColor;
   }
 
-  render() {
-    const swatch = document.createElement('div');
+  render(paletteID) {
+    const swatch = document.createElement('button');
     swatch.classList.add('swatch');
     swatch.setAttribute('id', this.id);
     swatch.style.backgroundColor = this.color;
 
-    const palette = document.querySelector('.palette-container');
+    const palette = document.querySelector(`#${paletteID}`);
     palette.appendChild(swatch);
   }
   
@@ -149,8 +240,18 @@ class Swatch {
      updateElements();
   }
 
+  getElement() {
+    const swatch = document.querySelector(`#${this.id}`);
+    return swatch;
+  }
+
+  getPaletteElement() {
+    const palette = this.element.parentNode;
+    return palette;
+  }
+
   setLocalStorage() {
-    localStorage.setItem("palette", JSON.stringify(swatches));
+    localStorage.setItem("palettes", JSON.stringify(palettes));
   }
 }
 
@@ -192,34 +293,29 @@ function init() {
 	rgbOutputValue = 'rgb(0, 255, 0)';
   cmykOutputValue = 'cmyk(100%, 0%, 100%, 0%)';
 
-  let palette = localStorage.getItem("palette");
+  const paletteStorage = localStorage.getItem("palettes");
   
-  if (palette) 
-    setPalette(JSON.parse(palette))
+  if (paletteStorage) 
+    setPalettes(JSON.parse(paletteStorage));
   else 
-   initPalette();
+   initPalettes();
 
 	updateKnobsPos();
 }
 
-function initPalette() {
-  swatchId = 0;
-  
-  let swatchCount = 9;
-
-  for (i = 0; i < swatchCount; i++) {
-    swatches.push(new Swatch(swatchId++, 'lightgrey', false));
-    swatches[i].render();
-  }
+function initPalettes() {
+  // Add an initial palette of blank swatches
+  palettes[0] = new Palette();
+  palettes[0].initSwatches();
 }
 
-function setPalette(palette) {
-  palette.forEach((swatch, index) => {
-    swatches[index] = new Swatch(swatch.id, swatch.color, swatch.status);
-  });
-
-  swatches.forEach((swatch) => {
-    swatch.render();
+function setPalettes(paletteStorage) {
+  // Fill the palettes array from the info gathered from local storage
+  paletteStorage.forEach((palette, i) => {
+    palettes[i] = new Palette();
+    palette.swatches.forEach((swatch, j) => {
+      palettes[i].swatches[j] = new Swatch(palettes[i].id, swatch.status, swatch.color);
+    });
   });
 }
 
@@ -344,23 +440,54 @@ function updateElements() {
 
 }
 
+function newPalette() {
+  let palette = new Palette();
+  palette.initSwatches();
+}
+
+function deletePalette() {
+  activePalette.delete();
+  activePalette.update();
+}
+
+function previousPalette() {
+  activePalette.previous();
+  activePalette.update();
+}
+
+function nextPalette() {
+  activePalette.next();
+  activePalette.update();
+}
+
 function handleSwatch(e) {
   const target = e.target;
-  const id = parseInt(target.getAttribute('id'));
-  const pageColor = body.style.backgroundColor || initialColor;
-  const swatchColor= swatches[id].color;
 
-  if (swatches[id].status) 
+  let id = parseInt(target.getAttribute('id').replace('swatch-', ''));
+  id = id % 9 == 0 ? 9 : id % 9;
+
+  let swatch = activePalette.swatches[id-1];
+
+  const pageColor = body.style.backgroundColor || initialColor;
+  const swatchColor = swatch.color;
+
+  if (swatch.status) 
     if (swatchColor == pageColor) 
       // Clear: If swatch background matches page background, clear swatch (set swatch background to 'lightgrey', toggle status) + update local storage
-      swatches[id].clear(target);
+      swatch.clear(target);
     else
       // Apply: If status is true, AND the page background is different from this, apply this color to the page background and update all values/visuals
-      swatches[id].apply(target);
+      swatch.apply(target);
   else
     // Set: If swatch status is false, set swatch background as page background, toggle status + update local storage
-    swatches[id].set(target);
+    swatch.set(target);
 }
+
+
+
+
+
+
 
 //
 /// Mode functions
@@ -484,6 +611,9 @@ function getRGB(string) {
 
   return rgb;
 }
+
+
+
 
 //
 /// Colour conversion functions
@@ -941,6 +1071,26 @@ function handleClick(e) {
   if (target.matches('#cmyk-button')) {
 		cmykMode();
 	}
+
+  // Create palette
+  if (target.matches('#new-palette')) {
+    newPalette();
+  }
+  
+  // Delete palette
+  if (target.matches('#delete-palette')) {
+    deletePalette();
+  }
+
+  // Previous palette
+  if (target.matches('#previous-palette')) {
+    previousPalette();
+  }
+  
+  // Next palette
+  if (target.matches('#next-palette')) {
+    nextPalette();
+  }
 
   // Palette swatches
   if (target.matches('.swatch')) {

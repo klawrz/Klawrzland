@@ -229,8 +229,8 @@ button:active {
 	display: none;
 }
 
-.palette-container {
-  display: grid;
+.palette {
+  display: inline-grid;
   grid-template: repeat(3, fit-content(30%)) / repeat(3, fit-content(30%));
   gap: 1rem;
   background-color: #fff;
@@ -244,4 +244,27 @@ button:active {
   border: 2px solid #333;
   border-radius: 50%;
   margin: 1rem;
+  cursor: pointer;
+}
+
+.palette-controls--container {
+  display: flex;
+  justify-content: space-evenly;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid black;
+  margin-top: 0.5rem;
+}
+
+.palette-controls {
+  cursor: pointer;
+  font-size: 2rem;
+  line-height: 1rem;
+}
+
+.palette-title {
+  background: white;
+  border-radius: 10px;
+  border: 1px solid black;
+  text-align: center;
 }
