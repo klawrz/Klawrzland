@@ -892,6 +892,10 @@ function calculateDegree(e) {
 	const x2 = e.pageX;
 	const y2 = e.pageY;
 
+  console.log(x2)
+  console.log(y2)
+
+
 	const deltaX = x1 - x2;
 	const deltaY = y1 - y2;
 
@@ -1120,7 +1124,7 @@ function handleMouseDown(e) {
 
 }
 
-// Handle mouse leave events
+// Handle mouse out events
 function handleMouseOut(e) {
  
 	const target = e.target;
@@ -1141,7 +1145,7 @@ function handleMouseUp(e) {
 
 	if (target.matches('.knob')) {
 		target.removeEventListener('mousemove', rotate);
-		target.removeEventListener('mouseleave', handleMouseOut);
+		target.removeEventListener('mouseout', handleMouseOut);
   	target.removeEventListener('mouseup', handleMouseUp);
   } 
 
