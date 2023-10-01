@@ -1,0 +1,297 @@
+<style>
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+  .container {
+    background: white;
+    border: 1px dotted black;
+    width: 400px;
+    height: 400px;
+  }
+
+  .knob {
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    background: green;
+  }
+
+  .knob:after {
+    content: '';
+    display: flex;
+    background-color: black;
+    width: 10px;
+    height: 10px;
+    border-radius: 100px;
+    margin: 0 auto;
+  }
+</style>
+
+<div class="wrapper">
+  <div class="container">
+    
+  </div>
+</div>
+
+<script>
+  const knobs = [];
+  let activeKnob = {};
+
+  class Knob {
+    static #lastID = 0;
+    id;
+
+    constructor() {
+      this.id = `knob-${++Knob.#lastID}`;
+      this.create();
+      this.render();
+      this.element = this.getElement();
+      this.center = this.getElementCenter();
+    }
+
+    create() {
+      knobs.push(this);
+    }
+
+    render() {
+      const element = document.createElement('div');
+      element.classList.add('knob');
+      element.setAttribute("id", this.id);
+
+      container.appendChild(element);
+    }
+
+    setActive(e) {
+      e.preventDefault();
+      let rect = this.getBoundingClientRect,
+        t = rect.top,
+        l = rect.left,
+        h = rect.height,
+        w = rect.width,
+        x, y;
+
+      center = {
+        x: l + (w / 2),
+        y: t + (h / 2)
+      };
+
+      x = e.clientX - center.x;
+      y = e.clientY - center.y;
+      startAngle = Math.atan(y, x) * (180 / Math.PI);
+      return active = true;
+    }
+
+    rotate(e) {
+
+
+      /*
+      const x = e.clientX - this.center[0];
+      const y = e.clientY = this.center[1];
+
+      this.element.style.transform = `rotate(${degrees}deg)`;
+      */
+      this.element.style.transform = `rotate(${Math.floor(this.calcDegree(e) - 90)}deg)`;
+      
+    }
+    
+    calcDegree(e) {
+      
+      // Get bounding rectangle values
+      const b = this.element.getBoundingClientRect();
+
+      // Get mouse position
+      const x1 = e.clientX;
+      const y1 = e.clientY;
+      
+      // Get bounding rectangle center
+      const x2 = b.left + (b.width / 2);
+      const y2 = b.top + (b.height / 2);
+      
+      /*
+      // Get knob center
+      const [x2, y2] = this.center;
+      */
+
+
+      
+      // Get deltas
+      const deltaX = x1 - x2;
+      const deltaY = y1 - y2;
+      
+
+      // Get radians
+      const rad = Math.atan(deltaY, deltaX);
+
+      // Get degrees
+      const deg = rad * (180 / Math.PI);
+
+      console.log(`mouseX: ${x1}`);
+      console.log(`mouseY: ${y1}`);
+
+      console.log(`b center: x=${x2}, y=${y2}`)
+
+      return deg;
+    }
+
+    getElement() {
+      const element = document.querySelector(`#${this.id}`)
+      return element;
+    }
+
+    getElementCenter() {
+      const x = this.element.offsetLeft + (this.element.offsetWidth / 2);
+      const y = this.element.offsetTop + (this.element.offsetHeight / 2);
+
+      let center = [x, y];
+
+      return center;
+    }
+
+  }
+
+  function init() {
+    const knob = new Knob();
+  }
+
+  // Get container
+  const container = document.querySelector('.container');
+  // Get rotating element
+  const rot = document.querySelector('.rotating-element');
+
+  // The document listens for clicks
+  document.addEventListener("click", handleClick);
+
+  // The container listens for mousedown events
+  container.addEventListener("mousedown", handleMouseDown);
+  
+  function handleClick(e) {
+    const target = e.target;
+
+    console.log(target);
+    console.dir(target);
+  }
+  
+  // Tasks when mousedown event detected
+  function handleMouseDown(e) {
+    const target = e.target;
+    
+    // Set active knob
+    if (target.matches('.knob')) {
+      const id = parseInt(target.getAttribute('id').replace('knob-', ''));
+      activeKnob = knobs[id-1];
+    }
+
+    // When the mouse is down, it has to come back up eventually, and it will likely move (otherwise we can just listen for click)
+    // Listen for these events (move / up) only while the mouse is down
+    container.addEventListener("mousemove", handleMouseMove);
+    //container.addEventListener("mouseout", handleMouseOut);
+    container.addEventListener("mouseup", handleMouseUp);
+  }
+
+  // Tasks for when the mouse is moving
+  function handleMouseMove(e) {
+    const target = e.target;
+    
+    activeKnob.rotate(e);
+  }
+
+  // Prepare for when the mouse is released
+  function handleMouseUp() {
+    // Reset active knob
+    activeKnob = {};
+
+    // Remove move/up listeners — They'll be added again the next time the mouse is down
+    container.removeEventListener("mousemove", handleMouseMove);
+    container.removeEventListener("mouseup", handleMouseUp);
+  }
+
+
+  // Handle mouse moving off of the element
+  function handleMouseOut(e) {
+    //const target = 
+  }
+
+  init();
+</script>
+
+
+
+
+
+
+
+
+
+<!-- This is the codepen:
+
+<script>
+  // 4 functions: init, rotate, start, stop
+  // Our final number used in `transform: rotate(${number}deg);`is the angle + the rotation
+
+  (function() {
+  var init, rotate, start, stop,
+    active = false,
+    angle = 0,
+    rotation = 0,
+    startAngle = 0,
+    center = {
+      x: 0,
+      y: 0
+    },
+    R2D = 180 / Math.PI,
+    rot = document.getElementById('rotate');
+
+  init = function() {
+    rot.addEventListener("mousedown", start, false);
+    $(document).bind('mousemove', function(event) {
+      if (active === true) {
+        event.preventDefault();
+        rotate(event);
+      }
+    });
+    $(document).bind('mouseup', function(event) {
+      event.preventDefault();
+      stop(event);
+    });
+  };
+
+  start = function(e) {
+    e.preventDefault();
+    console.dir(this.getBoundingClientRect)
+    var bb = this.getBoundingClientRect(),
+      t = bb.top,
+      l = bb.left,
+      h = bb.height,
+      w = bb.width,
+      x, y;
+    center = {
+      x: l + (w / 2),
+      y: t + (h / 2)
+    };
+    x = e.clientX - center.x;
+    y = e.clientY - center.y;
+    startAngle = R2D * Math.atan2(y, x);
+    return active = true;
+  };
+
+  rotate = function(e) {
+    e.preventDefault();
+    var x = e.clientX - center.x,
+      y = e.clientY - center.y,
+      d = R2D * Math.atan2(y, x);
+    rotation = d - startAngle;
+    return rot.style.webkitTransform = "rotate(" + (angle + rotation) + "deg)";
+  };
+
+  stop = function() {
+    angle += rotation;
+    return active = false;
+  };
+
+  init();
+
+}).call(this);
+</script>
+-->

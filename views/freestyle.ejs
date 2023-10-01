@@ -1,0 +1,56 @@
+<style>
+  .wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  canvas {
+    background: white;
+    border: 2px dotted black;
+  }
+</style>
+
+<div class="wrapper">
+  <canvas id="canvas" width="900" height="600"></canvas>
+</div>
+
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  function drawCircle() {
+    ctx.beginPath();
+    ctx.arc((canvas.width / 2), (canvas.height / 2), 100, 0, 2 * Math.PI);
+    ctx.stroke();
+  }
+
+  function drawLine(e) {
+    ctx.beginPath();
+    ctx.moveTo(canvas.width / 2, canvas.height / 2);
+    ctx.lineTo(e.clientX, e.clientY);
+    ctx.closePath();
+    ctx.stroke();
+  }
+
+  function init() {
+   
+    requestAnimationFrame(loop);
+  }
+
+  function loop() {
+    clearCanvas();
+    drawCircle();
+    //requestAnimationFrame(loop);
+  }
+
+  function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function handleMouseMove(e) {
+    drawLine(e);
+  }
+
+  document.addEventListener('mousemove', handleMouseMove);
+
+  init();
+</script>

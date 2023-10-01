@@ -45,6 +45,20 @@ app.get('/about', (req, res) => {
   res.render('about');
 });
 
+app.get('/tests', (req, res) => {
+  res.locals = {
+    title: "Tests"
+  };
+  res.render('tests');
+});
+
+app.get('/freestyle', (req, res) => {
+  res.locals = {
+    title: "Freestyle"
+  };
+  res.render('freestyle');
+});
+
 app.use((req, res, next) => {
   res.status(404).send("Sorry can't find that!")
 })
