@@ -1,0 +1,271 @@
+/* Variables */
+
+:root {
+  --knob-width: 50px;
+  --section-border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+
+
+/* Grid */
+
+.grid--upper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding-top: 5rem;
+  padding-bottom: 3rem;
+  background: #333;
+}
+
+.grid--upper > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.grid--lower {
+  display: grid;
+  grid-template-columns:  2fr 3fr 3fr;
+  padding-top: 3rem;
+  padding-bottom: 5rem;
+  border-top: var(--section-border);
+}
+
+.section-heading {
+  cursor: default;
+}
+
+
+/* Knob Wrappers */
+
+.knobs-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 6rem;
+}
+
+#hsl-wrapper .knob-container:nth-child(1) {
+  grid-column: 1 / span 2;
+}
+
+#rgb-wrapper .knob-container:nth-child(3) {
+  grid-column: 1 / span 2;
+}
+
+#rgb-wrapper {
+  border-left: var(--section-border);
+  border-right: var(--section-border);
+}
+
+.output-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.output-container {
+  background: #ccccb2;
+  border-radius: 5px;
+}
+
+
+/* Knob Containers */
+
+.knob-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-basis: 50%;
+}
+
+
+
+/* Knobs */
+
+.knob {
+  width: var(--knob-width);
+  height: var(--knob-width);
+  background: black;
+  border-top: var(--section-border);
+  border-radius: 100px;
+  margin: 1rem;
+  cursor: pointer;
+  box-shadow: inset 0px -2px 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.knob::after {
+  content: '';
+  display: flex;
+  width: 0.2rem;
+  height: 1rem;
+  background-color: white;
+  border: 1px solid rgba(0,0,0,0.3);
+  border-radius: 50%;
+  margin: 0.2rem auto;
+  margin-top: -0.5rem;
+}
+
+.display h5 {
+  cursor: default;
+}
+
+#hue-knob {
+ 
+}
+
+#saturation-knob {
+  background-color: gray;
+}
+
+#lightness-knob {
+  background-color: white;
+}
+
+#lightness-knob::after {
+  background-color: black;
+}
+
+#red-knob {
+  background-color: red;
+}
+
+#green-knob {
+  background-color: green;
+}
+
+#blue-knob {
+  background-color: blue;
+}
+
+#cyan-knob {
+  background-color: cyan;
+}
+
+#magenta-knob {
+  background-color: magenta;
+}
+
+#yellow-knob {
+  background-color: yellow;
+}
+
+#black-knob {
+  background-color: black
+}
+
+
+
+/* Display */
+
+.display h5 {
+  margin-top: 1rem;
+}
+
+
+
+/* Palettes */
+
+.palette-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.palette {
+  display: inline-grid;
+  grid-template: repeat(3, fit-content(30%)) / repeat(3, fit-content(30%));
+  gap: 1rem;
+  background-color: #fff;
+  border-radius: 1rem 0 0 1rem;
+}
+
+.swatch {
+  width: 6rem;
+  height: 6rem;
+  border: 2px solid #333;
+  border-radius: 50%;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+.palette-controls--container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  border-radius: 0 1rem 1rem 0;
+  padding: 1rem;
+  height: 100%;
+  border-left: 1px solid rgba(52,52,52,0.3);
+}
+
+.palette-controls {
+  cursor: pointer;
+  font-size: 2rem;
+  line-height: 1rem;
+  width: 3rem;
+  height: 3rem;
+}
+
+.palette-title {
+  background: white;
+  border-radius: 10px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+
+
+/* Outputs */
+
+.lcd-display {
+  background: hsla(93, 36%, 49%, 1);
+  background: linear-gradient(180deg, hsla(93, 36%, 49%, 1) 0%, hsla(104, 64%, 62%, 1) 50%, hsla(96, 34%, 50%, 1) 100%);
+  background: -moz-linear-gradient(180deg, hsla(93, 36%, 49%, 1) 0%, hsla(104, 64%, 62%, 1) 50%, hsla(96, 34%, 50%, 1) 100%);
+  background: -webkit-linear-gradient(180deg, hsla(93, 36%, 49%, 1) 0%, hsla(104, 64%, 62%, 1) 50%, hsla(96, 34%, 50%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#7AAB51", endColorstr="#80DC5F", GradientType=1 );
+  box-shadow: 
+    inset 1px 10px 30px 10px rgba(0,0,0,0.3), 
+    inset -3px -1px 40px 0 rgba(0,0,0,0.3);
+  padding: 1rem;
+  border-top: var(--section-border);
+  border-radius: 0.5rem 0.5rem 0 0;
+  cursor: default;
+}
+
+.lcd-display > * {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.lcd-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.lcd-copy {
+  background: rgba(0,0,0,0.7);
+  color: #7AAB51;
+  padding: 0 1rem;
+  cursor: pointer;
+}
+
+.mode-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.mode-buttons h5 {
+  margin: 0;
+}
+
+.mode-buttons button {
+  cursor: pointer;
+}
+
+
+/* Colour Field */
+
+.colour-field {
+  background: darkseagreen;
+  border-radius: 10px;
+}

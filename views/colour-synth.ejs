@@ -1,0 +1,153 @@
+<link href="/styles/colour-synth.css" rel="stylesheet">
+
+<div id="colourSynth">
+  <div class="colourSynth--wrapper section-padding color-scheme-04 transparent">
+    <div class="colourSynth--container page-width color-scheme-04 border-radius-3">
+
+      <!-- Top half -->
+      <div class="grid--upper">
+
+        <!-- HSL -->
+        <div id="hsl-wrapper">
+          <div class="knobs-wrapper">
+            <div id="hue-container" class="knob-container">
+              <div id="hue-knob" class="knob"></div>
+              <div id="hue-display" class="display"><h5>HUE</h5></div>
+            </div>
+            <div id="saturation-container" class="knob-container">
+              <div id="saturation-knob" class="knob"></div>
+              <div id="saturation-display" class="display"><h5>SAT</h5></div>
+            </div>
+            <div id="lightness-container" class="knob-container">
+              <div id="lightness-knob" class="knob"></div>
+              <div id="lightness-display" class="display"><h5>LIG</h5></div>
+            </div>
+          </div>
+          <div class="section-heading">
+            <h2>HSL</h2>
+          </div>
+        </div>
+
+        <!-- RGB -->
+        <div id="rgb-wrapper">
+          <div class="knobs-wrapper">
+            <div id="red-container" class="knob-container">
+              <div id="red-knob" class="knob"></div>
+              <div id="red-display" class="display"><h5>RED</h5></div>
+            </div>
+            <div id="green-container" class="knob-container">
+              <div id="green-knob" class="knob"></div>
+              <div id="green-display" class="display"><h5>GRN</h5></div>
+            </div>
+            <div id="blue-container" class="knob-container">
+              <div id="blue-knob" class="knob"></div>
+              <div id="blue-display" class="display"><h5>BLU</h5></div>
+            </div>
+          </div>
+          <div class="section-heading">
+            <h2>RGB</h2>
+          </div>
+        </div>
+
+        <!-- CMYK -->
+        <div id="cmyk-wrapper">
+          <div class="knobs-wrapper">
+            <div id="cyan-container" class="knob-container">
+              <div id="cyan-knob" class="knob"></div>
+              <div id="cyan-display" class="display"><h5>CYN</h5></div>
+            </div>
+            <div id="magenta-container" class="knob-container">
+              <div id="magenta-knob" class="knob"></div>
+              <div id="magenta-display" class="display"><h5>MAG</h5></div>
+            </div>
+            <div id="yellow-container" class="knob-container">
+              <div id="yellow-knob" class="knob"></div>
+              <div id="yellow-display" class="display"><h5>YEL</h5></div>
+            </div>
+            <div id="black-container" class="knob-container">
+              <div id="black-knob" class="knob"></div>
+              <div id="black-display" class="display"><h5>BLK</h5></div>
+            </div>
+          </div>
+          <div class="section-heading">
+            <h2>CMYK</h2>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom half -->
+      <div class="grid--lower">
+
+        <!-- Outputs -->
+        <div class="output-wrapper">
+
+          <!-- Hex -->
+          <div class="output-container">
+            <div class="lcd lcd-display">
+              <div class="lcd-top">
+                <span>HEX</span>
+                <span class="lcd-copy">COPY</span>
+              </div>
+              <span id="hex-output" class="output h5">cmyk(100%, 100%, 100%, 100%)</span>
+            </div>
+          </div>
+
+          <div class="mode-buttons">
+            <button><h5>Hex</h5></button>
+            <button><h5>HSL</h5></button>
+            <button><h5>RGB</h5></button>
+            <button><h5>CMYK</h5></button>
+
+          </div>
+    
+          <!-- HSL -->
+          <div class="output-container hidden">
+            <div class="output-top">
+              <h5>HSL</h5>
+              <button class="copy">COPY</button>
+            </div>
+            <span id="hsl-output" class="output h5">hsl(120, 100%, 50%)</span>
+          </div>
+    
+          <!-- RGB -->
+          <div class="output-container hidden">
+            <div class="output-top">
+              <h5>RGB</h5>
+              <button class="copy">COPY</button>
+            </div>
+            <span id="rgb-output" class="output h5">rgb(0, 255, 0)</span>
+          </div>
+    
+          <!-- CMYK -->
+          <div class="output-container hidden">
+            <div class="output-top">
+              <h5>CMYK</h5>
+              <button class="copy">COPY</button>
+            </div>
+            <span id="cmyk-output" class="output h5">cmyk(100%, 0%, 100%, 0%)</span>
+          </div>
+
+        </div>
+
+        <!-- Palettes -->
+        <div class="palette-wrapper">
+          <div class="palette-container"></div>
+          <div class="palette-controls--wrapper">
+            <div class="palette-controls--container color-scheme-03">
+              <button id="previous-palette" class="palette-controls color-scheme-04"><</button>
+              <button id="new-palette" class="palette-controls color-scheme-04">+</button>
+              <button id="delete-palette" class="palette-controls color-scheme-04">-</button>
+              <button id="next-palette" class="palette-controls color-scheme-04">></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Colour field -->
+        <div class="colour-field"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/scripts/colour-synth.js"></script>
