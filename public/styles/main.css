@@ -218,7 +218,7 @@ a {
   width: 20rem;
   border: 1px solid rgba(var(--color-foreground), 0.2);
   padding: 1rem 0;
-
+  z-index: 1;
 }
 
 details {
