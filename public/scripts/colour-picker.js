@@ -2,8 +2,9 @@
 //
 /   Knobs JS
 /
-/             https://www.youtube.com/watch?v=ELUSz0L8vTA 
 //   Credits: https://www.w3schools.com/lib/w3color.js
+/             https://www.youtube.com/watch?v=ELUSz0L8vTA 
+/             https://codepen.io/hienlm/pen/BaojoBj
 / 					  https://css-tricks.com/converting-color-spaces-in-javascript/
 /
 /
@@ -34,8 +35,15 @@ const body = document.querySelector('#colour-picker');
 // Get knobs container
 const knobsContainer = document.querySelector('.knobs-container');
 
-// Create array of knob elements
-let knobs = document.querySelectorAll('.knob');
+// Knob elements array
+let knobs = [];
+//document.querySelectorAll('.knob');
+
+// Palette elements array
+const palettes = [];
+
+// Active palette instance
+let activePalette = {};
 
 // Buttons
 const hslButton = document.querySelector('#hsl-button');
@@ -63,14 +71,120 @@ const hslOutput  = document.querySelector('#hsl-output');
 const rgbOutput  = document.querySelector('#rgb-output');
 const cmykOutput  = document.querySelector('#cmyk-output');
 
-// Palette
-const palettes = [];
-let activePalette = {};
+
 
 
 /*
 // CLASSES
 */
+
+class Knob {
+  static #lastID = 0;
+  id;
+
+  constructor() {
+    // Variables
+    this.id = ++Knob.#lastID;
+    this.element = null;
+    this.active = false;
+    this.startAngle = 0;
+    this.angle = 0;
+    this.rotation = 0;
+
+    // Methods
+    this.create();
+  }
+  
+  create() {
+    // Create the element and assign class + ID
+    this.element = document.createElement('div');
+    this.element.classList.add('knob');
+    this.element.id = `knob-${this.id}`;
+    document.querySelector('.container').appendChild(this.element);
+    
+    // Add event listeners
+    this.element.addEventListener('mousedown', this.handleMouseDown.bind(this));
+    
+    // Add class instance to knobs array
+    knobs.push(this);
+  }
+
+
+  handleMouseDown(e) {
+    e.preventDefault();
+
+    // Get bound event handler functions
+    this.boundMouseMove = this.handleMouseMove.bind(this);
+    this.boundMouseUp = this.handleMouseUp.bind(this);
+
+    // Add event listeners to handle mouse movement and mouse up
+    document.addEventListener('mousemove', this.boundMouseMove);
+    document.addEventListener('mouseup', this.boundMouseUp);
+    
+    // Get bounding box
+    let box = this.element.getBoundingClientRect();
+
+    // Get box center
+    this.boxCenter = {
+      x: box.left + (box.width / 2),
+      y: box.top + (box.height / 2)
+    }
+
+    // Get deltas
+    let dx = e.clientX - this.boxCenter.x,
+        dy = e.clientY - this.boxCenter.y;
+
+    // Get starting angle
+    this.startAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+    
+    // Set active
+    this.active = true;
+  }
+
+  handleMouseMove(e) {
+    e.preventDefault();
+    if (this.active === true) this.rotate(e);
+  }
+
+  handleMouseUp(e) {
+    e.preventDefault();
+
+    // Stop rotating
+    this.stop(e);
+
+    // Remove the event listeners
+    document.removeEventListener('mousemove', this.boundMouseMove);
+    document.removeEventListener('mouseup', this.boundMouseUp);
+  }
+
+  rotate(e) {
+    e.preventDefault();
+
+    // Get deltas
+    let dx = e.clientX - this.boxCenter.x,
+        dy = e.clientY - this.boxCenter.y;
+    
+    // Get degrees
+    let deg = Math.atan2(dy, dx) * (180 / Math.PI),
+        deg360 = Math.floor(this.angle + this.rotation).mod(360);
+    
+    // Get rotation amount
+    this.rotation = deg - this.startAngle;
+    
+    console.log(`deg360: ${deg360}`)
+
+    // Return knob transform css
+    return this.element.style.transform = `rotate(${deg360}deg)`;
+  }
+
+  stop(e) {
+    e.preventDefault();
+
+    this.angle += this.rotation;
+    this.active = false;
+  }
+
+}
 
 class Palette {
   static #lastID = 0;
@@ -259,6 +373,11 @@ class Swatch {
 /*
 // FUNCTIONS
 */
+
+// Handle negative integer modulo operations
+Number.prototype.mod = function(n) {
+  return ((this % n) + n) % n;
+}
 
 // For debugging
 function logValues() {
@@ -1111,6 +1230,7 @@ function handleClick(e) {
 // Listen for clicks
 body.addEventListener('click', handleClick);
 
+/*
 // Handle mouse down events
 function handleMouseDown(e) {
 
@@ -1153,7 +1273,7 @@ function handleMouseUp(e) {
 
 // Listen for mousedown
 knobsContainer.addEventListener('mousedown', handleMouseDown);
-
+*/
 
 //
 /// Main program execution
