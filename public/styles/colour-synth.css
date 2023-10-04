@@ -36,8 +36,8 @@
   background: -moz-linear-gradient(90deg, hsla(0, 0%, 20%, 1) 0%, hsla(0, 0%, 10%, 1) 83%, hsla(0, 0%, 20%, 1) 100%);
   background: -webkit-linear-gradient(90deg, hsla(0, 0%, 20%, 1) 0%, hsla(0, 0%, 10%, 1) 83%, hsla(0, 0%, 20%, 1) 100%);
   filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#333333", endColorstr="#646464", GradientType=1 );
-  border-top: 5px solid rgba(0,0,0,-0.6);
-  border-bottom: 23px solid rgba(0,0,0,1);
+  border-top: 5px solid rgba(0, 0, 0, 0);
+  border-bottom: 5px solid rgba(0, 0, 0, 0);
   box-shadow: inset 0px 0px 22px 17px rgba(0, 0, 0, 0.6);
 }
 
