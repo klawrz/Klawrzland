@@ -121,10 +121,6 @@
   background-color: white;
 }
 
-#lightness-knob::after {
-  background-color: black;
-}
-
 #red-knob {
   background-color: red;
 }
