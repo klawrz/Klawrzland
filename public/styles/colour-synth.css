@@ -14,7 +14,6 @@
   grid-template-columns: repeat(3, 1fr);
   padding-top: 5rem;
   padding-bottom: 3rem;
-  background: #333;
 }
 
 .grid--upper > div {
@@ -31,9 +30,21 @@
   border-top: var(--section-border);
 }
 
+.colourSynth--container {
+  background: hsla(0, 0%, 20%, 1);
+  background: linear-gradient(90deg, hsla(0, 0%, 20%, 1) 0%, hsla(0, 0%, 10%, 1) 83%, hsla(0, 0%, 20%, 1) 100%);
+  background: -moz-linear-gradient(90deg, hsla(0, 0%, 20%, 1) 0%, hsla(0, 0%, 10%, 1) 83%, hsla(0, 0%, 20%, 1) 100%);
+  background: -webkit-linear-gradient(90deg, hsla(0, 0%, 20%, 1) 0%, hsla(0, 0%, 10%, 1) 83%, hsla(0, 0%, 20%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#333333", endColorstr="#646464", GradientType=1 );
+  border-top: 5px solid rgba(0,0,0,-0.6);
+  border-bottom: 23px solid rgba(0,0,0,1);
+  box-shadow: inset 0px 0px 22px 17px rgba(0, 0, 0, 0.6);
+}
+
 .section-heading {
   cursor: default;
 }
+
 
 
 /* Knob Wrappers */
@@ -86,11 +97,15 @@
   width: var(--knob-width);
   height: var(--knob-width);
   background: black;
-  border-top: var(--section-border);
+  /*border-top: var(--section-border);*/
   border-radius: 100px;
   margin: 1rem;
   cursor: pointer;
-  box-shadow: inset 0px -2px 1px 1px rgba(0, 0, 0, 0.3);
+  /*box-shadow: inset 0px -2px 1px 1px rgba(0, 0, 0, 0.3);*/
+}
+
+.knob::before {
+  content: '';
 }
 
 .knob::after {
@@ -102,7 +117,7 @@
   border: 1px solid rgba(0,0,0,0.3);
   border-radius: 50%;
   margin: 0.2rem auto;
-  margin-top: -0.5rem;
+  margin-top: -0.3rem;
 }
 
 .display h5 {
@@ -110,43 +125,92 @@
 }
 
 #hue-knob {
- 
+  background: hsla(0, 0%, 28%, 1);
+  background: radial-gradient(circle, hsla(0, 0%, 50%, 0.2) 2%, hsla(0, 0%, 0%, 1) 100%);
+  background: -moz-radial-gradient(circle, hsla(0, 0%, 50%, 0.2) 2%, hsla(0, 0%, 0%, 1) 100%);
+  background: -webkit-radial-gradient(circle, hsla(0, 0%, 50%, 0.2) 2%, hsla(0, 0%, 0%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#474747", endColorstr="#000000", GradientType=1 );
 }
 
 #saturation-knob {
   background-color: gray;
+  background: hsla(0, 0%, 50%, 1);
+  background: radial-gradient(circle, hsla(0, 0%, 50%, 1) 2%, hsla(0, 1%, 33%, 1) 100%);
+  background: -moz-radial-gradient(circle, hsla(0, 0%, 50%, 1) 2%, hsla(0, 1%, 33%, 1) 100%);
+  background: -webkit-radial-gradient(circle, hsla(0, 0%, 50%, 1) 2%, hsla(0, 1%, 33%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#808080", endColorstr="#545252", GradientType=1 );
 }
 
 #lightness-knob {
   background-color: white;
+  background: hsla(0, 0%, 100%, 1);
+  background: radial-gradient(circle, hsla(0, 0%, 100%, 1) 0%, hsla(0, 0%, 96%, 1) 0%, hsla(0, 0%, 71%, 1) 100%);
+  background: -moz-radial-gradient(circle, hsla(0, 0%, 100%, 1) 0%, hsla(0, 0%, 96%, 1) 0%, hsla(0, 0%, 71%, 1) 100%);
+  background: -webkit-radial-gradient(circle, hsla(0, 0%, 100%, 1) 0%, hsla(0, 0%, 96%, 1) 0%, hsla(0, 0%, 71%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFFFFF", endColorstr="#F5F5F5", GradientType=1 );
 }
 
 #red-knob {
   background-color: red;
+  background: hsla(0, 100%, 50%, 1);
+  background: radial-gradient(circle, hsla(0, 100%, 50%, 1) 2%, hsla(0, 69%, 33%, 1) 100%);
+  background: -moz-radial-gradient(circle, hsla(0, 100%, 50%, 1) 2%, hsla(0, 69%, 33%, 1) 100%);
+  background: -webkit-radial-gradient(circle, hsla(0, 100%, 50%, 1) 2%, hsla(0, 69%, 33%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FF0000", endColorstr="#8E1A1A", GradientType=1 );
 }
 
 #green-knob {
   background-color: green;
+  background: hsla(120, 100%, 25%, 1);
+  background: radial-gradient(circle, hsla(120, 100%, 25%, 1) 2%, hsla(120, 41%, 21%, 1) 100%);
+  background: -moz-radial-gradient(circle, hsla(120, 100%, 25%, 1) 2%, hsla(120, 41%, 21%, 1) 100%);
+  background: -webkit-radial-gradient(circle, hsla(120, 100%, 25%, 1) 2%, hsla(120, 41%, 21%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#008000", endColorstr="#1F4A1F", GradientType=1 );
 }
 
 #blue-knob {
   background-color: blue;
+  background: hsla(240, 100%, 68%, 1);
+  background: radial-gradient(circle, hsla(240, 100%, 68%, 1) 2%, hsla(240, 69%, 31%, 1) 100%);
+  background: -moz-radial-gradient(circle, hsla(240, 100%, 68%, 1) 2%, hsla(240, 69%, 31%, 1) 100%);
+  background: -webkit-radial-gradient(circle, hsla(240, 100%, 68%, 1) 2%, hsla(240, 69%, 31%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#5B5BFF", endColorstr="#181884", GradientType=1 );
 }
 
 #cyan-knob {
   background-color: cyan;
+  background: hsla(180, 100%, 50%, 1);
+  background: radial-gradient(circle, hsla(180, 100%, 50%, 1) 2%, hsla(180, 59%, 39%, 1) 100%);
+  background: -moz-radial-gradient(circle, hsla(180, 100%, 50%, 1) 2%, hsla(180, 59%, 39%, 1) 100%);
+  background: -webkit-radial-gradient(circle, hsla(180, 100%, 50%, 1) 2%, hsla(180, 59%, 39%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#00FFFF", endColorstr="#289D9D", GradientType=1 );
 }
 
 #magenta-knob {
   background-color: magenta;
+  background: hsla(300, 100%, 50%, 1);
+  background: radial-gradient(circle, hsla(300, 100%, 50%, 1) 2%, hsla(300, 60%, 35%, 1) 100%);
+  background: -moz-radial-gradient(circle, hsla(300, 100%, 50%, 1) 2%, hsla(300, 60%, 35%, 1) 100%);
+  background: -webkit-radial-gradient(circle, hsla(300, 100%, 50%, 1) 2%, hsla(300, 60%, 35%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FF00FF", endColorstr="#902490", GradientType=1 );
 }
 
 #yellow-knob {
   background-color: yellow;
+  background: hsla(60, 100%, 50%, 1);
+  background: radial-gradient(circle, hsla(60, 100%, 50%, 1) 2%, hsla(60, 63%, 29%, 1) 100%);
+  background: -moz-radial-gradient(circle, hsla(60, 100%, 50%, 1) 2%, hsla(60, 63%, 29%, 1) 100%);
+  background: -webkit-radial-gradient(circle, hsla(60, 100%, 50%, 1) 2%, hsla(60, 63%, 29%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFFF00", endColorstr="#78781B", GradientType=1 );
 }
 
 #black-knob {
-  background-color: black
+  background-color: black;
+  background: hsla(0, 0%, 28%, 1);
+  background: radial-gradient(circle, hsla(0, 0%, 50%, 0.2) 2%, hsla(0, 0%, 0%, 1) 100%);
+  background: -moz-radial-gradient(circle, hsla(0, 0%, 50%, 0.2) 2%, hsla(0, 0%, 0%, 1) 100%);
+  background: -webkit-radial-gradient(circle, hsla(0, 0%, 50%, 0.2) 2%, hsla(0, 0%, 0%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#474747", endColorstr="#000000", GradientType=1 );
 }
 
 
@@ -243,6 +307,7 @@
   color: #7AAB51;
   padding: 0 1rem;
   cursor: pointer;
+  border-radius: 0.5rem;
 }
 
 .mode-buttons {
