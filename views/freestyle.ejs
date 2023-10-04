@@ -17,29 +17,45 @@
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
 
+  let x, y;
+
   function drawCircle() {
     ctx.beginPath();
     ctx.arc((canvas.width / 2), (canvas.height / 2), 100, 0, 2 * Math.PI);
     ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo((canvas.width / 2) - 100, (canvas.height / 2));
+    ctx.lineTo((canvas.width / 2) + 100, (canvas.height / 2));
+    ctx.closePath();
+    ctx.stroke();
   }
 
-  function drawLine(e) {
+  function draw() {
+    drawCircle();
     ctx.beginPath();
-    ctx.moveTo(e.offsetX, e.offsetY);
+    ctx.moveTo(x, y);
     ctx.lineTo(canvas.width / 2, canvas.height / 2);
     ctx.closePath();
     ctx.stroke();
   }
 
+  function update(e) {
+    x = e.offsetX;
+    y = e.offsetY;
+
+    let log = getAngle();
+    console.log(log)
+  }
+
   function init() {
-   
     requestAnimationFrame(loop);
   }
 
   function loop() {
     clearCanvas();
-    drawCircle();
-    //requestAnimationFrame(loop);
+    draw();
+    requestAnimationFrame(loop);
   }
 
   function clearCanvas() {
@@ -47,7 +63,25 @@
   }
 
   function handleMouseMove(e) {
-    drawLine(e);
+    update(e);
+  }
+
+  function getAngle() {
+    let x1 = x;
+    let y1 = y;
+
+    let x2 = canvas.width / 2;
+    let y2 = canvas.height / 2;
+
+    let deltaX = x1 - x2;
+    let deltaY = y1 - y2;
+
+    let rad = Math.atan(deltaY, deltaX);
+    console.log(rad)
+
+    let deg = rad * (180 / Math.PI);
+
+    return deg
   }
 
   document.addEventListener('mousemove', handleMouseMove);
