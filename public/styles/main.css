@@ -181,6 +181,11 @@ body {
   }
 }
 
+.lcd {
+  font-family: 'VT323', monospace;
+  color: rgba(0, 0, 0, 0.7);
+}
+
 
 a {
   text-decoration: none;
@@ -362,6 +367,10 @@ summary.list--item {
   }
 }
 
+
+
+/* Utility Classes */
+
 .hidden {
   display: none !important;
 }
@@ -379,6 +388,23 @@ summary.list--item {
 .right {
   text-align: right;
 }
+
+.border-radius-1 {
+  border-radius: 1rem;
+}
+
+.border-radius-2 {
+  border-radius: 2rem;
+}
+
+.border-radius-3 {
+  border-radius: 3rem;
+}
+
+.cursor-default {
+  cursor: default;
+}
+
 
 
 /*
