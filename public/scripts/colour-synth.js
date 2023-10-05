@@ -211,12 +211,12 @@ class Palette {
   initSwatches() {
     // Fill the palette up with blank swatches
     while (this.swatches.length < Palette.maxSwatches) {
-      // Color defaults to 'lightgrey' when unspecified
+      // Color defaults to 'transparent' when unspecified
       this.addSwatch(this.id, false);
     }
   }
 
-  addSwatch(paletteId, status, color = 'lightgrey') {
+  addSwatch(paletteId, status, color = 'transparent') {
     this.swatches.push(new Swatch(paletteId, status, color));
   }
 
@@ -274,7 +274,7 @@ class Swatch {
   }
 
   render(paletteID) {
-    const swatch = document.createElement('button');
+    const swatch = document.createElement('div');
     swatch.classList.add('swatch');
     swatch.setAttribute('id', this.id);
     swatch.style.backgroundColor = this.color;

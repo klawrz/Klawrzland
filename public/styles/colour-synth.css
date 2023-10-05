@@ -68,15 +68,6 @@
   border-right: var(--section-border);
 }
 
-.output-wrapper {
-  display: flex;
-  flex-direction: column;
-}
-
-.output-container {
-  background: #ccccb2;
-  border-radius: 5px;
-}
 
 
 /* Knob Containers */
@@ -226,31 +217,40 @@
 /* Palettes */
 
 .palette-wrapper {
+  margin: 0 auto;
+}
+
+.palette-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column-reverse;
 }
 
 .palette {
   display: inline-grid;
   grid-template: repeat(3, fit-content(30%)) / repeat(3, fit-content(30%));
   gap: 1rem;
-  background-color: #fff;
   border-radius: 1rem 0 0 1rem;
+  align-self: center;
 }
 
 .swatch {
   width: 6rem;
-  height: 6rem;
-  border: 2px solid #333;
-  border-radius: 50%;
+  height: 4rem;
+  background: transparent;
+  border: 2px solid rgba(0, 0, 0, 0.7);
+  border-radius: 0.5rem;
   margin: 1rem;
   cursor: pointer;
 }
 
+.palette-controls--wrapper {
+  margin-top: 2rem;
+}
+
 .palette-controls--container {
   display: flex;
+  flex-direction: row;
   justify-content: space-evenly;
-  flex-direction: column;
   border-radius: 0 1rem 1rem 0;
   padding: 1rem;
   height: 100%;
@@ -258,23 +258,34 @@
 }
 
 .palette-controls {
-  cursor: pointer;
   font-size: 2rem;
-  line-height: 1rem;
-  width: 3rem;
+  line-height: 3rem;
+  width: 6rem;
   height: 3rem;
+  text-align: center;
+}
+
+.palette-controls:not(:last-child) {
+  margin-right: 1rem;
 }
 
 .palette-title {
-  background: white;
-  border-radius: 10px;
-  border: 1px solid black;
   text-align: center;
 }
 
 
 
 /* Outputs */
+
+.output-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.output-container {
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
 
 .lcd-display {
   background: hsla(93, 36%, 49%, 1);
@@ -287,7 +298,8 @@
     inset -3px -1px 40px 0 rgba(0,0,0,0.3);
   padding: 1rem;
   border-top: var(--section-border);
-  border-radius: 0.5rem 0.5rem 0 0;
+  border-bottom: var(--section-border);
+  border-radius: 0.5rem;
   cursor: default;
 }
 
@@ -302,7 +314,7 @@
   margin-bottom: 2rem;
 }
 
-.lcd-copy {
+.lcd-button {
   background: rgba(0,0,0,0.7);
   color: #7AAB51;
   padding: 0 1rem;
@@ -327,6 +339,8 @@
 /* Colour Field */
 
 .colour-field {
-  background: darkseagreen;
+  background: black;
   border-radius: 10px;
+  border-top: var(--section-border);
+  border-bottom: var(--section-border);
 }

@@ -87,7 +87,7 @@
             <div class="lcd lcd-display">
               <div class="lcd-top">
                 <span>HEX</span>
-                <span class="lcd-copy">COPY</span>
+                <span class="lcd-button">COPY</span>
               </div>
               <span id="hex-output" class="output h5">cmyk(100%, 100%, 100%, 100%)</span>
             </div>
@@ -132,13 +132,15 @@
 
         <!-- Palettes -->
         <div class="palette-wrapper">
-          <div class="palette-container"></div>
-          <div class="palette-controls--wrapper">
-            <div class="palette-controls--container color-scheme-03">
-              <button id="previous-palette" class="palette-controls color-scheme-04"><</button>
-              <button id="new-palette" class="palette-controls color-scheme-04">+</button>
-              <button id="delete-palette" class="palette-controls color-scheme-04">-</button>
-              <button id="next-palette" class="palette-controls color-scheme-04">></button>
+          <div class="palette-container lcd lcd-display">
+            <div class="palette-controls--wrapper">
+              <div class="palette-title">Palette 1</div>
+              <div class="palette-controls--container">
+                <div id="previous-palette" class="palette-controls lcd-button"><</div>
+                <div id="next-palette" class="palette-controls lcd-button">></div>
+                <div id="new-palette" class="palette-controls lcd-button">+</div>
+                <div id="delete-palette" class="palette-controls lcd-button">-</div>
+              </div>
             </div>
           </div>
         </div>
