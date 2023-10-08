@@ -192,7 +192,7 @@ class Palette {
   id;
 
   constructor() {
-    this.id = `palette-${++Palette.#lastID}`;
+    this.id = ++Palette.#lastID;
     this.swatches = [];
     this.update();
     this.create();
