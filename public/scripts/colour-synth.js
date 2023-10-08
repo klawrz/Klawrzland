@@ -20,6 +20,7 @@ class ColourSynth {
     ];
     this.activeKnob = null;
     this.hoveredKnob = null;
+    this.palettes = [];
     this.activePalette = null;
     this.activeOutput = 'hex';
 
@@ -46,10 +47,32 @@ class ColourSynth {
     if (target.matches('#next-palette')) nextPalette();
   
     // Handle swatch clicks
-    if (target.matches('.swatch')) handleSwatch(e);
+    if (target.matches('.swatch')) this.handleSwatch(e);
 
     // Handle mode button clicks
     if (target.matches('.mode-button')) this.handleModeButton(e);
+  }
+
+  handleSwatch(e) {
+    const target = e.target;
+
+    const id = parseInt(target.id.replace('swatch-', '')) % (Palette.maxSwatches + 1);
+
+    const swatch = colourSynth.activePalette.swatches[id-1];
+
+    const activeColor = JSON.stringify(colourSynth.rgb);
+    const swatchColor = JSON.stringify(swatch.rgb);
+
+    if (swatch.status) 
+
+      // Clear: If swatch background matches page background, clear swatch (set swatch background to 'lightgrey', toggle status) + update local storage
+      if (swatchColor == activeColor) swatch.clear(target);
+
+      // Apply: If status is true, AND the page background is different from this, apply this color to the page background and update all values/visuals
+      else swatch.apply(target);
+
+    // Set: If swatch status is false, set swatch background as page background, toggle status + update local storage
+    else swatch.set(target);
   }
 
   handleModeButton(e) {    
@@ -615,38 +638,38 @@ class Palette {
 
   setActive() {
     // Disable/hide other palettes
-    palettes.forEach((palette) => {
+    colourSynth.palettes.forEach((palette) => {
       if (palette == this) return;
       palette.element.classList.add('hidden');
     });
 
     this.element.classList.remove('hidden');
-    activePalette = this;
+    colourSynth.activePalette = this;
   }
 
   create() {
-    palettes.push(this);
+    colourSynth.palettes.push(this);
   }
 
   delete() {
     // Prevent deleting last palette
-    if (palettes.length == 1) return;
+    if (colourSynth.palettes.length == 1) return;
 
     // Set next palette as active, or previous palette if we are on the final one
-    const next = palettes[palettes.indexOf(this) + 1] ? palettes[palettes.indexOf(this) + 1].setActive() : palettes[palettes.indexOf(this) - 1].setActive();
+    const next = colourSynth.palettes[colourSynth.palettes.indexOf(this) + 1] ? colourSynth.palettes[colourSynth.palettes.indexOf(this) + 1].setActive() : colourSynth.palettes[colourSynth.palettes.indexOf(this) - 1].setActive();
 
     // Destroy the DOM element and object instance
     this.element.remove();
-    palettes.splice(palettes.indexOf(this), 1);
+    colourSynth.palettes.splice(colourSynth.palettes.indexOf(this), 1);
   }
 
   next() {
-    const nextPalette = palettes[palettes.indexOf(this) + 1] || palettes[0];
+    const nextPalette = colourSynth.palettes[colourSynth.palettes.indexOf(this) + 1] || colourSynth.palettes[0];
     nextPalette.setActive();
   }
 
   previous() {
-    const previousPalette = palettes[palettes.indexOf(this) - 1] || palettes[palettes.length - 1];
+    const previousPalette = colourSynth.palettes[colourSynth.palettes.indexOf(this) - 1] || colourSynth.palettes[colourSynth.palettes.length - 1];
     previousPalette.setActive();
   }
 
@@ -690,7 +713,7 @@ class Swatch {
   constructor(paletteID, status, color) {
     this.id = ++Swatch.#lastID;
     this.paletteID = paletteID;
-    this.color = color;
+    this.rgb = null;
     this.status = status;
     this.render(this.paletteID);
     this.element = this.getElement();
@@ -698,25 +721,32 @@ class Swatch {
   }
 
   set(target) {
-    // Set swatch background as page background
-    this.color = colorField.style.backgroundColor || initialColor;
+    console.log('setting')
+
+    if (this.rgb === null) this.rgb = [];
+
+    // Get colours for swatch
+    [this.rgb[0], this.rgb[1], this.rgb[2]] = colourSynth.rgb;
+
+    let [r, g, b] = this.rgb;
 
     // Toggle status 
     this.status = true;
-
+    
     // Remove '+' sign
     target.classList.remove('empty');
     
     // Set swatch colour
-    target.style.backgroundColor = this.color;
+    target.style.backgroundColor = `rgb(${r}, ${g}, ${b})`
 
     // Update local storage
     this.setLocalStorage();
   }
 
   clear(target) {
-    // Clear: If swatch background matches page background, clear swatch (set swatch background to 'lightgrey', toggle status) + update local storage
-    this.color = 'transparent';
+    console.log('cleariong')
+    // Clear: If swatch background matches page background, clear swatch (set swatch background to 'null', toggle status) + update local storage
+    this.color = null;
     this.status = false;
 
     target.style.backgroundColor = this.color;
@@ -727,50 +757,54 @@ class Swatch {
   apply(target) {
     // Apply: If status is true, AND the page background is different from this, apply this color to the page background and update all values/visuals
     
+    console.log('applying')
     // Store swatch colour in variable
     let newColor = target.style.backgroundColor;
 
     // Update values
     this.update(newColor);
-
-    // Change background
-    body.style.backgroundColor = newColor;
   }
 
   render(paletteID) {
+    // Create element
     const swatch = document.createElement('div');
+    
+    // Add classes
     swatch.classList.add('swatch');
     if (!this.status) swatch.classList.add('empty');
+
+    // Set element ID
     swatch.id = `swatch-${this.id}`;
-    swatch.style.backgroundColor = this.color;
+
+    // Set background colour
+    if (this.rgb) {
+      let [r, g, b] = this.rgb;
+      swatch.style.backgroundColor = `rgb(${this.color.r}, ${this.color.g} ${this.color.b})`;
+    } else {
+      swatch.style.backgroundColor = null;
+    }
 
     const palette = document.querySelector(`#palette-${paletteID}`);
     palette.appendChild(swatch);
   }
   
   update(color) {
+    let r, g, b;
     
-     // Get array of integers from RGB string
-     let [r, g, b] = colourSynth.rgb;
+    // Extract integers from swatch RGB value
+    const matches = color.match(/(\d+)/g);
+
+    if (matches && matches.length === 3) {
+      r = parseInt(matches[0], 10);
+      g = parseInt(matches[1], 10);
+      b = parseInt(matches[2], 10);
+    }
  
-     // Update global value of Red, Green, and Blue
-     setRGB(r, g, b);
- 
-     // Update output values
-     rgbOutputValue = `rgb(${red}, ${green}, ${blue})`;
-     rgbOutput.textContent = rgbOutputValue;
- 
-     hexOutputValue = rgbToHex(red, green, blue);
-     hexOutput.textContent = hexOutputValue;
- 
-     hslOutputValue = rgbToHSL(red, green, blue);
-     hslOutput.textContent = hslOutputValue;
- 
-     cmykOutputValue = rgbToCMYK(red, green, blue);
-     cmykOutput.textContent = cmykOutputValue;
- 
-     // Update elements
-     updateElements();
+    // Update colour synth rgb value
+    colourSynth.rgb = [r, g, b];
+
+    colourSynth.updateOutputs('rgb');
+    colourSynth.updateColorField();
   }
 
   getElement() {
@@ -784,7 +818,7 @@ class Swatch {
   }
 
   setLocalStorage() {
-    localStorage.setItem("palettes", JSON.stringify(palettes));
+    localStorage.setItem("palettes", JSON.stringify(colourSynth.palettes));
   }
 }
 
@@ -805,13 +839,6 @@ class Swatch {
 
 // Init ColourSynth
 const colourSynth = new ColourSynth();
-
-// Palettes array
-const palettes = [];
-let activePalette = {};
-
-// Initial color field colour
-const initialColor = `#000`;
 
 
 /*
@@ -844,8 +871,8 @@ function init() {
 // Init palette function
 function initPalettes() {
   // Add an initial palette of blank swatches
-  palettes[0] = new Palette();
-  palettes[0].initSwatches();
+  colourSynth.palettes[0] = new Palette();
+  colourSynth.palettes[0].initSwatches();
 }
 
 // Set palettes instead of init if they exist in local storage
@@ -853,9 +880,9 @@ function setPalettes(paletteStorage) {
 
   // Fill the palettes array from the info gathered from local storage
   paletteStorage.forEach((palette, i) => {
-    palettes[i] = new Palette();
+    colourSynth.palettes[i] = new Palette();
     palette.swatches.forEach((swatch, j) => {
-      palettes[i].swatches[j] = new Swatch(palettes[i].id, swatch.status, swatch.color);
+      colourSynth.palettes[i].swatches[j] = new Swatch(colourSynth.palettes[i].id, swatch.status, swatch.color);
     });
   });
 }
@@ -866,39 +893,16 @@ function newPalette() {
   palette.initSwatches();
 }
 function deletePalette() {
-  activePalette.delete();
-  activePalette.update();
+  colourSynth.activePalette.delete();
+  colourSynth.activePalette.update();
 }
 function previousPalette() {
-  activePalette.previous();
-  activePalette.update();
+  colourSynth.activePalette.previous();
+  colourSynth.activePalette.update();
 }
 function nextPalette() {
-  activePalette.next();
-  activePalette.update();
-}
-
-// Handle swatch clicks
-function handleSwatch(e) {
-  const target = e.target;
-
-  const id = parseInt(target.id.replace('swatch-', '')) % (Palette.maxSwatches + 1);
-
-  const swatch = activePalette.swatches[id-1];
-
-  const activeColor = colorField.style.backgroundColor || initialColor;
-  const swatchColor = swatch.color;
-
-  if (swatch.status) 
-    if (swatchColor === activeColor) 
-      // Clear: If swatch background matches page background, clear swatch (set swatch background to 'lightgrey', toggle status) + update local storage
-      swatch.clear(target);
-    else
-      // Apply: If status is true, AND the page background is different from this, apply this color to the page background and update all values/visuals
-      swatch.apply(target);
-  else
-    // Set: If swatch status is false, set swatch background as page background, toggle status + update local storage
-    swatch.set(target);
+  colourSynth.activePalette.next();
+  colourSynth.activePalette.update();
 }
 
 init();
