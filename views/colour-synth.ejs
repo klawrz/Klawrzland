@@ -2,7 +2,7 @@
 
 <div id="colourSynth">
   <div class="colourSynth--wrapper section-padding color-scheme-04 transparent">
-    <div class="colourSynth--container page-width color-scheme-04 border-radius-3 prevent-select">
+    <div id="synth" class="colourSynth--container page-width color-scheme-04 border-radius-3 prevent-select">
 
       <!-- Top half -->
       <div class="grid--upper">
@@ -12,15 +12,30 @@
           <div class="knobs-wrapper">
             <div id="hue-container" class="knob-container">
               <div id="hue-knob" class="knob"></div>
-              <div id="hue-display" class="display"><h5>HUE</h5></div>
+              <div id="hue-display" class="display">
+                <h5 class="knob-type">HUE</h5>
+                <h5 class="knob-value hidden">
+                  <span>0</span>
+                </h5>
+              </div>
             </div>
             <div id="saturation-container" class="knob-container">
               <div id="saturation-knob" class="knob"></div>
-              <div id="saturation-display" class="display"><h5>SAT</h5></div>
+              <div id="saturation-display" class="display">
+                <h5 class="knob-type">SAT</h5>
+                <h5 class="knob-value hidden">
+                  <span>0</span><span>%</span>
+                </h5>
+              </div>
             </div>
             <div id="lightness-container" class="knob-container">
               <div id="lightness-knob" class="knob"></div>
-              <div id="lightness-display" class="display"><h5>LIG</h5></div>
+              <div id="lightness-display" class="display">
+                <h5 class="knob-type">LIG</h5>
+                <h5 class="knob-value hidden">
+                  <span>0</span><span>%</span>
+                </h5>
+              </div>
             </div>
           </div>
           <div class="section-heading">
@@ -33,15 +48,30 @@
           <div class="knobs-wrapper">
             <div id="red-container" class="knob-container">
               <div id="red-knob" class="knob"></div>
-              <div id="red-display" class="display"><h5>RED</h5></div>
+              <div id="red-display" class="display">
+                <h5 class="knob-type">RED</h5>
+                <h5 class="knob-value hidden">
+                  <span>0</span>
+                </h5>
+              </div>
             </div>
             <div id="green-container" class="knob-container">
               <div id="green-knob" class="knob"></div>
-              <div id="green-display" class="display"><h5>GRN</h5></div>
+              <div id="green-display" class="display">
+                <h5 class="knob-type">GRN</h5>
+                <h5 class="knob-value hidden">
+                  <span>0</span>
+                </h5>
+              </div>
             </div>
             <div id="blue-container" class="knob-container">
               <div id="blue-knob" class="knob"></div>
-              <div id="blue-display" class="display"><h5>BLU</h5></div>
+              <div id="blue-display" class="display">
+                <h5 class="knob-type">BLU</h5>
+                <h5 class="knob-value hidden">
+                  <span>0</span>
+                </h5>
+              </div>
             </div>
           </div>
           <div class="section-heading">
@@ -54,19 +84,39 @@
           <div class="knobs-wrapper">
             <div id="cyan-container" class="knob-container">
               <div id="cyan-knob" class="knob"></div>
-              <div id="cyan-display" class="display"><h5>CYN</h5></div>
+              <div id="cyan-display" class="display">
+                <h5 class="knob-type">CYN</h5>
+                <h5 class="knob-value hidden">
+                  <span>0</span><span>%</span>
+                </h5>
+              </div>
             </div>
             <div id="magenta-container" class="knob-container">
               <div id="magenta-knob" class="knob"></div>
-              <div id="magenta-display" class="display"><h5>MAG</h5></div>
+              <div id="magenta-display" class="display">
+                <h5 class="knob-type">MAG</h5>
+                <h5 class="knob-value hidden">
+                  <span>0</span><span>%</span>
+                </h5>
+              </div>
             </div>
             <div id="yellow-container" class="knob-container">
               <div id="yellow-knob" class="knob"></div>
-              <div id="yellow-display" class="display"><h5>YEL</h5></div>
+              <div id="yellow-display" class="display">
+                <h5 class="knob-type">YEL</h5>
+                <h5 class="knob-value hidden">
+                  <span>0</span><span>%</span>
+                </h5>
+              </div>
             </div>
             <div id="black-container" class="knob-container">
               <div id="black-knob" class="knob"></div>
-              <div id="black-display" class="display"><h5>BLK</h5></div>
+              <div id="black-display" class="display">
+                <h5 class="knob-type">BLK</h5>
+                <h5 class="knob-value hidden">
+                  <span>0</span><span>%</span>
+                </h5>
+              </div>
             </div>
           </div>
           <div class="section-heading">
@@ -86,19 +136,18 @@
           <div class="output-container">
             <div class="lcd lcd-display">
               <div class="lcd-top">
-                <span>HEX</span>
+                <span id="output-type">HEX</span>
                 <span class="lcd-button">COPY</span>
               </div>
-              <span id="hex-output" class="output h5">cmyk(100%, 100%, 100%, 100%)</span>
+              <span id="output" class="output h5">#000000</span>
             </div>
           </div>
 
           <div class="mode-buttons">
-            <button><h5>Hex</h5></button>
-            <button><h5>HSL</h5></button>
-            <button><h5>RGB</h5></button>
-            <button><h5>CMYK</h5></button>
-
+            <button id="hex-button" class="mode-button active">Hex</button>
+            <button id="hsl-button" class="mode-button">HSL</button>
+            <button id="rgb-button" class="mode-button">RGB</button>
+            <button id="cmyk-button" class="mode-button">CMYK</button>
           </div>
     
           <!-- HSL -->
@@ -146,7 +195,7 @@
         </div>
 
         <!-- Colour field -->
-        <div class="colour-field"></div>
+        <div id="colorField" class="color-field"></div>
       </div>
     </div>
   </div>
