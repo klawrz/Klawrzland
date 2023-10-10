@@ -8,9 +8,10 @@
       <div class="grid--upper">
 
         <!-- HSL -->
-        <div id="hsl-wrapper">
-          <div class="knobs-wrapper">
+        <div id="hsl-wrapper" class="knobs-wrapper">
+          <div class="knobs-container">
             <div id="hue-container" class="knob-container">
+              <div class="color-wheel"></div>
               <div id="hue-knob" class="knob"></div>
               <div id="hue-display" class="display">
                 <h5 class="knob-type">HUE</h5>
@@ -44,8 +45,8 @@
         </div>
 
         <!-- RGB -->
-        <div id="rgb-wrapper">
-          <div class="knobs-wrapper">
+        <div id="rgb-wrapper" class="knobs-wrapper">
+          <div class="knobs-container">
             <div id="red-container" class="knob-container">
               <div id="red-knob" class="knob"></div>
               <div id="red-display" class="display">
@@ -80,8 +81,8 @@
         </div>
 
         <!-- CMYK -->
-        <div id="cmyk-wrapper">
-          <div class="knobs-wrapper">
+        <div id="cmyk-wrapper" class="knobs-wrapper">
+          <div class="knobs-container">
             <div id="cyan-container" class="knob-container">
               <div id="cyan-knob" class="knob"></div>
               <div id="cyan-display" class="display">
@@ -132,52 +133,26 @@
         <!-- Outputs -->
         <div class="output-wrapper">
 
-          <!-- Hex -->
-          <div class="output-container">
-            <div class="lcd lcd-display">
+            <div class="output-container lcd lcd-display">
               <div class="lcd-top">
-                <span id="output-type">HEX</span>
+                <span><h2 id="output-type">Hex</h2></span>
                 <span class="lcd-button">COPY</span>
               </div>
-              <span id="output" class="output h5">#000000</span>
+              <span><h2 id="output" class="output-value">#000000</h2></span>
+              <div class="mode-buttons">
+                <ul class="menu">
+                  <li id="hex-button" class="mode-button lcd-button active">Hex</li>
+                  <li id="hsl-button" class="mode-button lcd-button">HSL</li>
+                  <li id="rgb-button" class="mode-button lcd-button">RGB</li>
+                  <li id="cmyk-button" class="mode-button lcd-button">CMYK</li>
+                </ul>
+              </div>
             </div>
-          </div>
-
-          <div class="mode-buttons">
-            <button id="hex-button" class="mode-button active">Hex</button>
-            <button id="hsl-button" class="mode-button">HSL</button>
-            <button id="rgb-button" class="mode-button">RGB</button>
-            <button id="cmyk-button" class="mode-button">CMYK</button>
-          </div>
-    
-          <!-- HSL -->
-          <div class="output-container hidden">
-            <div class="output-top">
-              <h5>HSL</h5>
-              <button class="copy">COPY</button>
-            </div>
-            <span id="hsl-output" class="output h5">hsl(120, 100%, 50%)</span>
-          </div>
-    
-          <!-- RGB -->
-          <div class="output-container hidden">
-            <div class="output-top">
-              <h5>RGB</h5>
-              <button class="copy">COPY</button>
-            </div>
-            <span id="rgb-output" class="output h5">rgb(0, 255, 0)</span>
-          </div>
-    
-          <!-- CMYK -->
-          <div class="output-container hidden">
-            <div class="output-top">
-              <h5>CMYK</h5>
-              <button class="copy">COPY</button>
-            </div>
-            <span id="cmyk-output" class="output h5">cmyk(100%, 0%, 100%, 0%)</span>
-          </div>
 
         </div>
+        
+        <!-- Colour field -->
+        <div id="colorField" class="color-field"></div>
 
         <!-- Palettes -->
         <div class="palette-wrapper">
@@ -185,17 +160,17 @@
             <div class="palette-controls--wrapper">
               <div class="palette-title">Palette 1</div>
               <div class="palette-controls--container">
-                <div id="previous-palette" class="palette-controls lcd-button"><</div>
-                <div id="next-palette" class="palette-controls lcd-button">></div>
-                <div id="new-palette" class="palette-controls lcd-button">+</div>
-                <div id="delete-palette" class="palette-controls lcd-button">-</div>
+                <ul class="menu">
+                  <li id="previous-palette" class="lcd-button"><</li>
+                  <li id="next-palette" class="lcd-button">></li>
+                  <li id="new-palette" class="lcd-button">+</li>
+                  <li id="delete-palette" class="lcd-button">-</li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Colour field -->
-        <div id="colorField" class="color-field"></div>
       </div>
     </div>
   </div>
