@@ -162,6 +162,7 @@ class ColourSynth {
       
       // HSL
       this.knobs[0].valueDegrees = this.hsl[0]; // Hue knob value needs no calculation
+      this.knobs[0].element.style.transform = `rotate(${this.knobs[0].valueDegrees}deg)`;
 
       // S and L knob
       for (let i = 1; i <= 2; i++) {
@@ -779,7 +780,7 @@ class Swatch {
     // Set background colour
     if (this.rgb) {
       let [r, g, b] = this.rgb;
-      swatch.style.backgroundColor = `rgb(${this.color.r}, ${this.color.g} ${this.color.b})`;
+      swatch.style.backgroundColor = `rgb(${r}, ${g} ${b})`;
     } else {
       swatch.style.backgroundColor = null;
     }
@@ -882,7 +883,7 @@ function setPalettes(paletteStorage) {
   paletteStorage.forEach((palette, i) => {
     colourSynth.palettes[i] = new Palette();
     palette.swatches.forEach((swatch, j) => {
-      colourSynth.palettes[i].swatches[j] = new Swatch(colourSynth.palettes[i].id, swatch.status, swatch.color);
+      colourSynth.palettes[i].swatches[j] = new Swatch(colourSynth.palettes[i].id, swatch.status, swatch.rgb);
     });
   });
 }

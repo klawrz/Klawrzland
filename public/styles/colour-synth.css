@@ -26,10 +26,11 @@
 
 .grid--lower {
   display: grid;
-  grid-template-columns:  2fr 3fr 3fr;
+  grid-template-columns:  2fr 3fr 2fr;
   padding-top: 3rem;
   padding-bottom: 5rem;
   border-top: var(--section-border);
+  gap: 3rem;
 }
 
 .colourSynth--container {
@@ -52,9 +53,13 @@
 /* Knob Wrappers */
 
 .knobs-wrapper {
+  gap: 5rem;
+}
+
+.knobs-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem 6rem;
+  gap: 3rem 6rem;
 }
 
 #hsl-wrapper .knob-container:nth-child(1) {
@@ -75,6 +80,7 @@
 /* Knob Containers */
 
 .knob-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -117,12 +123,24 @@
   cursor: default;
 }
 
+.color-wheel {
+  display: block;
+  background-image: url(/images/wheel.png);
+  width: 7rem;
+  height: 7rem;
+  position: absolute;
+  background-size: cover;
+  z-index: 0;
+  top: 0;
+}
+
 #hue-knob {
-  background: hsla(0, 0%, 28%, 1);
-  background: radial-gradient(circle, hsla(0, 0%, 50%, 0.2) 2%, hsla(0, 0%, 0%, 1) 100%);
-  background: -moz-radial-gradient(circle, hsla(0, 0%, 50%, 0.2) 2%, hsla(0, 0%, 0%, 1) 100%);
-  background: -webkit-radial-gradient(circle, hsla(0, 0%, 50%, 0.2) 2%, hsla(0, 0%, 0%, 1) 100%);
-  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#474747", endColorstr="#000000", GradientType=1 );
+  background: hsla(0, 0%, 30%, 1);
+  background: radial-gradient(circle, hsla(0, 0%, 30%, 1) 0%, hsla(0, 0%, 0%, 1) 100%);
+  background: -moz-radial-gradient(circle, hsla(0, 0%, 30%, 1) 0%, hsla(0, 0%, 0%, 1) 100%);
+  background: -webkit-radial-gradient(circle, hsla(0, 0%, 30%, 1) 0%, hsla(0, 0%, 0%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#656565", endColorstr="#000000", GradientType=1 );
+  z-index: 1;
 }
 
 #saturation-knob {
@@ -198,12 +216,11 @@
 }
 
 #black-knob {
-  background-color: black;
-  background: hsla(0, 0%, 28%, 1);
-  background: radial-gradient(circle, hsla(0, 0%, 50%, 0.2) 2%, hsla(0, 0%, 0%, 1) 100%);
-  background: -moz-radial-gradient(circle, hsla(0, 0%, 50%, 0.2) 2%, hsla(0, 0%, 0%, 1) 100%);
-  background: -webkit-radial-gradient(circle, hsla(0, 0%, 50%, 0.2) 2%, hsla(0, 0%, 0%, 1) 100%);
-  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#474747", endColorstr="#000000", GradientType=1 );
+  background: hsla(0, 0%, 30%, 1);
+  background: radial-gradient(circle, hsla(0, 0%, 20%, 1) 0%, hsla(0, 0%, 0%, 1) 100%);
+  background: -moz-radial-gradient(circle, hsla(0, 0%, 20%, 1) 0%, hsla(0, 0%, 0%, 1) 100%);
+  background: -webkit-radial-gradient(circle, hsla(0, 0%, 20%, 1) 0%, hsla(0, 0%, 0%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#656565", endColorstr="#000000", GradientType=1 );
 }
 
 
@@ -264,18 +281,6 @@
   height: 100%;
 }
 
-.palette-controls {
-  font-size: 2rem;
-  line-height: 3rem;
-  width: 6rem;
-  height: 3rem;
-  text-align: center;
-}
-
-.palette-controls:not(:last-child) {
-  margin-right: 1rem;
-}
-
 .palette-title {
   text-align: center;
 }
@@ -292,6 +297,15 @@
 .output-container {
   border-radius: 5px;
   margin-bottom: 1rem;
+  padding: 0 1rem;
+}
+
+#output-type {
+  line-height: 3rem;
+}
+
+.output-value {
+  font-size: 3rem;
 }
 
 .lcd-display {
@@ -309,30 +323,35 @@
   border-bottom: var(--section-border);
   border-radius: 0.5rem;
   cursor: default;
-}
-
-.lcd-display > * {
   font-size: 2rem;
-  margin: 0;
 }
 
 .lcd-top {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .lcd-button {
   background: rgba(0,0,0,0.7);
   color: #7AAB51;
-  padding: 0 1rem;
   cursor: pointer;
   border-radius: 0.5rem;
+  width: 6rem;
+  height: 3rem;
+  text-align: center;
+  line-height: 3rem;
+}
+
+.lcd-button:not(:last-child) {
+  margin-right: 1rem;
 }
 
 .mode-buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  margin-top: 1rem;
+  padding: 1rem;
 }
 
 .mode-buttons h5 {
@@ -341,6 +360,13 @@
 
 .mode-buttons button {
   cursor: pointer;
+}
+
+.active {
+  background: transparent;
+  color: rgba(0,0,0,0.7);
+  border: 2px solid rgba(0,0,0,0.7);
+  line-height: 2.6rem;
 }
 
 
