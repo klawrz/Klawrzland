@@ -18,6 +18,11 @@ class ColourSynth {
       'RED', 'GRN', 'BLU',
       'CYN', 'MAG', 'YEL', 'BLK'
     ];
+    this.knobColors = [
+      null, 'gray', 'white',
+      'red', 'green', 'blue',
+      'cyan', 'magenta', 'yellow', 'black'
+    ];
     this.activeKnob = null;
     this.hoveredKnob = null;
     this.palettes = [];
@@ -117,77 +122,43 @@ class ColourSynth {
     this.activePalette = palette;
   }
 
-  updateColorField() {
-    colorField.style.backgroundColor = `rgb(${this.rgb[0]}, ${this.rgb[1]}, ${this.rgb[2]})`;
-  }
-
   getDegreeFromValue(value) {
     const degree = (value / 256) * 360;
     return degree;
   }
 
-  updateKnobDegrees(updatedFamily) {
+  update(updatedFamily) {
+    // Pass in the updated family
+    this.updateFamily(updatedFamily);
+
+    // Convert other families
+    this.updateOtherFamilies(updatedFamily);
+
+    // Update outputs
+    this.updateOutputs();
+
+    // Update knob values, positions, and displays
+    this.updateKnobValues();
+
+    // Update the colourfield
+    this.updateColorField();
+  }
+
+  updateFamily(updatedFamily) {
+    // Update the colourSynth's HSL, RGB or CMYK value. This new value is used for conversions
+    const knobs = this.knobs;
+
+    // When rotating a knob in a given family, the other knobs in that family don't change
     if (updatedFamily === 'hsl') {
-
-      // RGB
-      for (let i = 3, j = 0; i <= 5; i++) {
-        this.knobs[i].valueDegrees = (this.rgb[j] / 256) * 360;
-        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].valueDegrees}deg)`;
-      }
-
-      // CMYK
-      for (let i = 6, j = 0; i <= 9; i++) {
-        this.knobs[i].valueDegrees = (this.cmyk[j] / 101) * 360;
-        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].valueDegrees}deg)`;
-      }
-      
-    } else if (updatedFamily === 'cmyk') {
-
-      // RGB
-      for (let i = 3, j = 0; i <= 5; i++) {
-        this.knobs[i].valueDegrees = (this.rgb[j] / 256) * 360;
-        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].valueDegrees}deg)`;
-      }
-      
-      // HSL
-      this.knobs[0].valueDegrees = this.hsl[0]; // Hue knob value needs no calculation
-
-      // S and L knob
-      for (let i = 1; i <= 2; i++) {
-        this.knobs[i].valueDegrees = (this.hsl[i] / 101) * 360;
-        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].valueDegrees}deg)`;
-      }
-
+      this.hsl = [knobs[0].value, knobs[1].value, knobs[2].value];
+    } else if (updatedFamily === 'rgb') {
+      this.rgb = [knobs[3].value, knobs[4].value, knobs[5].value];
     } else {
-      
-      // HSL
-      this.knobs[0].valueDegrees = this.hsl[0]; // Hue knob value needs no calculation
-      this.knobs[0].element.style.transform = `rotate(${this.knobs[0].valueDegrees}deg)`;
-
-      // S and L knob
-      for (let i = 1; i <= 2; i++) {
-        this.knobs[i].valueDegrees = (this.hsl[i] / 101) * 360;
-        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].valueDegrees}deg)`;
-      }
-
-      // CMYK
-      for (let i = 6, j = 0; i <= 9; i++) {
-        this.knobs[i].valueDegrees = (this.cmyk[j] / 256) * 360;
-        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].valueDegrees}deg)`;
-      }
-
+      this.hsl = [knobs[6].value, knobs[7].value, knobs[8].value, knobs[9].value];
     }
   }
 
-  updateKnobDisplay() {
-    this.knobs.forEach((knob) => {
-      const newValue = knob.getDisplayValue();
-      knob.updateDisplay(newValue);
-    });
-  }
-
-
-  updateOutputs(updatedFamily) {
+  updateOtherFamilies(updatedFamily) {
     // Init variables for colours
     let h, s, l, r, g, b, c, m, y, k;
     
@@ -234,21 +205,110 @@ class ColourSynth {
 
     // At this point, RGB values are updated regardless of family. Get new Hex string
     this.hex = this.toHex(r, g, b);
+  }
 
+  updateKnobValues() {
+    const knobValueMappings = [
+      ...this.hsl, // First 3 knobs
+      ...this.rgb, // Next 3 knobs
+      ...this.cmyk, // Last 4 knobs
+    ];
+  
+    this.knobs.forEach((knob, index) => {
+      knob.value = knobValueMappings[index];
+      knob.updatePosition();
+      knob.updateDisplay();
+    });
+  }
+
+  updateKnobPosition(knob) {
+
+    knob.degrees = knob.valueToDegrees(knob.value);
+
+
+
+    this.knobs.forEach((knob) => {
+      if (knob === this.activeKnob) return;
+      knob.degrees = knob.valueToDegrees();
+      knob.element.style.transform = `rotate(${knob.degrees}deg)`;
+      if (knob.progress) knob.updateProgressBar();
+    });
+
+
+
+
+    /*
+    if (updatedFamily === 'hsl') {
+
+      // RGB
+      for (let i = 3, j = 0; i <= 5; i++) {
+        this.knobs[i].degrees = (this.rgb[j] / 256) * 360;
+        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].degrees}deg)`;
+      }
+
+      // CMYK
+      for (let i = 6, j = 0; i <= 9; i++) {
+        this.knobs[i].degrees = (this.cmyk[j] / 101) * 360;
+        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].degrees}deg)`;
+      }
+      
+    } else if (updatedFamily === 'cmyk') {
+
+      // RGB
+      for (let i = 3, j = 0; i <= 5; i++) {
+        this.knobs[i].degrees = (this.rgb[j] / 256) * 360;
+        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].degrees}deg)`;
+      }
+      
+      // HSL
+      this.knobs[0].degrees = this.hsl[0]; // Hue knob value needs no calculation
+
+      // S and L knob
+      for (let i = 1; i <= 2; i++) {
+        this.knobs[i].degrees = (this.hsl[i] / 101) * 360;
+        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].degrees}deg)`;
+      }
+
+    } else {
+      
+      // HSL
+      this.knobs[0].degrees = this.hsl[0]; // Hue knob value needs no calculation
+      this.knobs[0].element.style.transform = `rotate(${this.knobs[0].degrees}deg)`;
+
+      // S and L knob
+      for (let i = 1; i <= 2; i++) {
+        this.knobs[i].degrees = (this.hsl[i] / 101) * 360;
+        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].degrees}deg)`;
+      }
+
+      // CMYK
+      for (let i = 6, j = 0; i <= 9; i++) {
+        this.knobs[i].degrees = (this.cmyk[j] / 101) * 360;
+        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].degrees}deg)`;
+      }
+
+    }
+    */
+  }
+
+  updateKnobDisplays() {
+    this.knobs.forEach((knob) => {
+      knob.updateDisplay(knob.value);
+    });
+  }
+
+
+  updateOutputs() {
     // Update variables
-    [h, s, l] = this.hsl;
-    [c, m, y, k] = this.cmyk;
+    const [h, s, l] = this.hsl;
+    const [r, g, b] = this.rgb;
+    const [c, m, y, k] = this.cmyk;
 
     // Update output strings
     this.hslOutput = `hsl(${h}, ${s}%, ${l}%)`; 
     this.rgbOutput = `rgb(${r}, ${g}, ${b})`;
     this.cmykOutput = `cmyk(${c}%, ${m}%, ${y}%, ${k}%)`;
     this.hexOutput = this.hex;
-
-    
-    // With the outputs updated, we can update the Knob value and position (valueDegrees)
-    this.updateKnobDegrees(updatedFamily);
-    this.updateKnobDisplay();
     
     // Update active output
     const type = document.querySelector('#output-type');
@@ -258,6 +318,10 @@ class ColourSynth {
     else if (this.activeOutput === 'HSL') output.textContent = this.hslOutput;
     else if (this.activeOutput === 'RGB') output.textContent = this.rgbOutput;
     else if (this.activeOutput === 'CMYK') output.textContent = this.cmykOutput;
+  }
+
+  updateColorField() {
+    colorField.style.backgroundColor = `rgb(${this.rgb[0]}, ${this.rgb[1]}, ${this.rgb[2]})`;
   }
 
   toHex(r, g, b) {
@@ -409,25 +473,35 @@ class Knob {
   id;
   static #lastID = 0;
   
-  constructor(element, type) {
+  constructor(element, type, color) {
     // Variables
     this.id = ++Knob.#lastID;
     this.element = element;
     this.type = type;
+    this.color = color;
     this.active = false;
     this.hovered = false;
     this.startAngle = 0;
+    this.startDegrees = -135;
+    this.startY = 0;
     this.angle = 0;
     this.rotation = 0;
-    this.valueDegrees = 0;
+    this.degrees = -135;
+    this.value = 0;
+    this.progress = this.type === 'HUE' ? null : element.previousElementSibling.children[0].children[0]; // inner progress bar element
+    this.family = this.assignFamily();
+
+    // Conditionals
+    if (this.type === 'SAT') this.startDegrees = 135;
+    else if (this.type === 'LIG') this.startDegrees = 0;
+    if (this.type !== 'HUE') this.element.style.transform = `rotate(${this.startDegrees}deg)`;
     
     // Events
     this.element.addEventListener('mouseenter', this.handleMouseEnter.bind(this));
     this.element.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
     this.element.addEventListener('mousedown', this.handleMouseDown.bind(this));
-
+    
     // Methods
-    this.family = this.assignFamily();
   }
 
   handleMouseEnter(e) {
@@ -509,22 +583,36 @@ class Knob {
     return family;
   }
 
+  stop(e) {
+    e.preventDefault();
+    this.angle += this.rotation;
+    this.active = false;
+  }
+
   start(e) {
-    // Get bounding box
-    let box = this.element.getBoundingClientRect();
+    e.preventDefault();
 
-    // Get box center
-    this.boxCenter = {
-      x: box.left + (box.width / 2),
-      y: box.top + (box.height / 2)
+    if (this.type === 'HUE') {
+      // Get bounding box
+      let box = this.element.getBoundingClientRect();
+
+      // Get box center
+      this.boxCenter = {
+        x: box.left + (box.width / 2),
+        y: box.top + (box.height / 2)
+      }
+
+      // Get deltas
+      let dx = e.clientX - this.boxCenter.x,
+          dy = e.clientY - this.boxCenter.y;
+
+      // Get starting angle
+      this.startAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+      
+    } else {
+      this.startY = e.clientY;
+      this.startDegrees = this.degrees;
     }
-
-    // Get deltas
-    let dx = e.clientX - this.boxCenter.x,
-        dy = e.clientY - this.boxCenter.y;
-
-    // Get starting angle
-    this.startAngle = Math.atan2(dy, dx) * (180 / Math.PI);
     
     // Set active
     this.active = true;
@@ -533,62 +621,79 @@ class Knob {
   rotate(e) {
     e.preventDefault();
 
-    // Get deltas
-    let dx = e.clientX - this.boxCenter.x,
-        dy = e.clientY - this.boxCenter.y;
-    
-    // Get degrees
-    let deg = Math.atan2(dy, dx) * (180 / Math.PI);
-    
-    // Get rotation amount
-    this.rotation = deg - this.startAngle;
+    // Only the Hue knob needs 360 rotation
+    if (this.type === 'HUE') {
+      // Get deltas
+      let dx = e.clientX - this.boxCenter.x,
+          dy = e.clientY - this.boxCenter.y;
+      
+      // Get degrees
+      let deg = Math.atan2(dy, dx) * (180 / Math.PI);
+      
+      // Get rotation amount
+      this.rotation = deg - this.startAngle;
 
-    // Get degree between 0 and 359
-    this.valueDegrees = Math.floor((this.angle + this.rotation).mod(360));
+      // Get degree between 0 and 359
+      this.degrees = Math.floor((this.angle + this.rotation).mod(360));
 
-    // Rotate knob element
-    this.element.style.transform = `rotate(${this.valueDegrees}deg)`;
-
-    // With an updated value, we can convert to other formats, then reverse calculate the updated knob degrees from the values
-    this.updateColourSynthOutputs()
-    colourSynth.updateColorField();
-  }
-
-  stop(e) {
-    e.preventDefault();
-    this.angle += this.rotation;
-    this.active = false;
-  }
-
-  updateColourSynthOutputs() {
-    // At this point in rotating, the current knob has an updated value in degrees, and the other knobs in the family have not changed
-    if (this.family === 'hsl') {
-      // Using the display value, we can convert to other colours and update the global value for those colours
-      colourSynth.hsl = [colourSynth.knobs[0].getDisplayValue(), colourSynth.knobs[1].getDisplayValue(), colourSynth.knobs[2].getDisplayValue()];
-    } else if (this.family === 'rgb') {
-      colourSynth.rgb = [colourSynth.knobs[3].getDisplayValue(), colourSynth.knobs[4].getDisplayValue(), colourSynth.knobs[5].getDisplayValue()];
     } else {
-      colourSynth.cmyk = [colourSynth.knobs[6].getDisplayValue(), colourSynth.knobs[7].getDisplayValue(), colourSynth.knobs[8].getDisplayValue(), colourSynth.knobs[9].getDisplayValue()];
+
+      // Other knobs
+      const deltaY = this.startY - e.clientY;
+    
+      // Calculate the number of degrees to move per pixel (adjust as needed)
+      const degreesPerPixel = 1;
+
+      this.degrees = this.startDegrees + deltaY * degreesPerPixel;
+
+      // Limit the knob's rotation to -135 to 135 degrees
+      this.degrees = Math.max(-135, Math.min(135, this.degrees));
+      
+      // Move the progress bar
+      this.updateProgressBar();
     }
+    
+    // Rotate knob element
+    this.element.style.transform = `rotate(${this.degrees}deg)`;
 
-    // At this point, one of the colourSynth outputs (HSL, RGB, CMYK) has an updated value
-    // We tell colourSynth to update the outputs of the other families by letting it know which family just got updated via knob rotation
-    colourSynth.updateOutputs(this.family);
+    // Update knob value
+    this.update();
   }
 
+  update() {
+    // Update knob value
+    this.value = this.type === 'HUE' ? this.degrees : this.degreesToValue(this.degrees);
+
+    // Update knob display value
+    this.updateDisplay();
+
+    // Update colourSynth
+    colourSynth.update(this.family);
+  }
+
+  /*
   getDisplayValue() {
-    if (this.type === 'HUE') return this.valueDegrees;
-    else if (this.type === 'SAT') return Math.floor(100 - (this.valueDegrees / 360) * 100);
-    else if (this.type === 'LIG') return Math.floor(((this.valueDegrees + 180) % 360) * (101 / 360));
-    else if (this.type === 'RED' || this.type === 'GRN' || this.type === 'BLU') return Math.floor((this.valueDegrees / 360) * 256);
-    else return Math.floor((this.valueDegrees / 360) * 101);
+    if (this.type === 'HUE') return this.degrees;
+    else if (this.type === 'SAT') return Math.floor(100 - (this.degrees / 360) * 100);
+    else if (this.type === 'LIG') return Math.floor(((this.degrees + 180) % 360) * (101 / 360));
+    else if (this.type === 'RED' || this.type === 'GRN' || this.type === 'BLU') return Math.floor((this.degrees / 360) * 256);
+    else return Math.floor((this.degrees / 360) * 101);
   }
+  */
 
-  updateDisplay(newValue) {
+  updateDisplay() {
     const display = this.element.nextElementSibling;
     const value = display.children[1]
 
-    value.children[0].textContent = newValue;
+    value.children[0].textContent = this.value;
+  }
+
+  updatePosition() {
+    if (this === colourSynth.activeKnob) return;
+  
+    this.degrees = this.valueToDegrees(this.value);
+    this.element.style.transform = `rotate(${this.degrees}deg)`;
+    if (this.progress) this.updateProgressBar();
   }
 
   showValue() {
@@ -596,7 +701,7 @@ class Knob {
     const type = display.children[0];
     const value = display.children[1]
 
-    value.children[0].textContent = this.getDisplayValue();
+    value.children[0].textContent = this.value;
 
     type.classList.add('hidden');
     value.classList.remove('hidden');
@@ -608,6 +713,7 @@ class Knob {
     display.children[1].classList.add('hidden')
   }
 
+  /*
   updateValues() {
 
     // Set mode, pass it in with the function call
@@ -619,6 +725,53 @@ class Knob {
 
     // Update colour values
     colourSynth.updateKnobValues(mode);
+  }
+  */
+
+  updateProgressBar() {
+    this.progress.style.transform = `rotate(${this.degrees + 135}deg)`;
+    let progress = parseInt(this.progress.style.transform.replace('rotate(', '').replace(')', ''));
+    let segments = 0;
+
+    // Determine number of border segments
+    if (progress <= 90) segments = 1;
+    else if (progress >= 91 && progress <= 180) segments = 2;
+    else if (progress >= 181) segments = 3;
+
+    // Change border colour to indicate additional segments
+    if (segments === 1) {
+      this.progress.style.borderRightColor = 'var(--progress-bar)';
+      this.progress.style.borderTopColor = 'var(--progress-bar)';
+    } else if (segments === 2) {
+      this.progress.style.borderRightColor = this.color;
+      this.progress.style.borderTopColor = 'var(--progress-bar)';
+    } else if (segments === 3) {
+      this.progress.style.borderRightColor = this.color;
+      this.progress.style.borderTopColor = this.color;
+    }
+
+  }
+
+  degreesToValue(degrees) {
+    // Map the range of degrees (-135 to 135) to the range of values (0 to 100)
+    const minDegrees = -135;
+    const maxDegrees = 135;
+    const minValue = 0;
+    const maxValue = this.family === 'rgb' ? 255 : 100;
+
+    // Calculate the value using linear mapping
+    const value = ((degrees - minDegrees) / (maxDegrees - minDegrees)) * (maxValue - minValue) + minValue;
+
+    // Ensure the value is within the 0 to 100 range
+    return Math.min(maxValue, Math.max(minValue, Math.round(value)));
+  }
+
+  valueToDegrees(value) {
+    let minDegrees = -135;
+    let maxDegrees = 135;
+    let minValue = 0;
+    let maxValue = this.family === 'rgb' ? 255 : 100;
+    return ((value - minValue) / (maxValue - minValue)) * (maxDegrees - minDegrees) + minDegrees;
   }
 }
 
@@ -857,7 +1010,7 @@ function init() {
   // Init knobs
   const knobElements = document.querySelectorAll('.knob');
   knobElements.forEach((element, index) => {
-    const knob = new Knob(element, colourSynth.knobTypes[index]);
+    const knob = new Knob(element, colourSynth.knobTypes[index], colourSynth.knobColors[index]);
     colourSynth.knobs.push(knob);
   });
 

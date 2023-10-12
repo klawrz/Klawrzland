@@ -5,6 +5,7 @@
   --section-border: 2px solid rgba(255, 255, 255, 0.3);
   --outer-shadow: 0rem 0rem 0.6rem 0rem rgba(0, 0, 0, 0.5), 
   0rem 0rem 0.6rem 0rem rgba(0, 0, 0, 0.5);
+  --progress-bar: #444;
 }
 
 
@@ -96,15 +97,10 @@
   width: var(--knob-width);
   height: var(--knob-width);
   background: black;
-  /*border-top: var(--section-border);*/
   border-radius: 100px;
   margin: 1rem;
   cursor: pointer;
   box-shadow: var(--outer-shadow);
-}
-
-.knob::before {
-  content: '';
 }
 
 .knob::after {
@@ -223,6 +219,93 @@
   filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#656565", endColorstr="#000000", GradientType=1 );
 }
 
+
+
+/* Knob Progress Bars */
+
+.progress-wrapper {
+  position: absolute;
+  top: 0.5rem;
+  pointer-events: none;
+}
+
+.progress-overflow {
+  position: relative;
+  width: 6rem;
+  height: 5rem;
+  overflow: hidden;
+}
+
+.progress-bar {
+  position: absolute;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  border: 2px solid var(--progress-bar);
+}
+
+#saturation-container .progress-bar {
+  border-bottom-color: gray;
+  border-right-color: var(--progress-bar);
+  border-top-color: var(--progress-bar);
+  transform: rotate(0deg);
+}
+
+#lightness-container .progress-bar {
+  border-bottom-color: white;
+  border-right-color: var(--progress-bar);
+  border-top-color: var(--progress-bar);
+  transform: rotate(0deg);
+}
+
+#red-container .progress-bar {
+  border-bottom-color: red;
+  border-right-color: var(--progress-bar);
+  border-top-color: var(--progress-bar);
+  transform: rotate(0deg);
+}
+
+#green-container .progress-bar {
+  border-bottom-color: green;
+  border-right-color: var(--progress-bar);
+  border-top-color: var(--progress-bar);
+  transform: rotate(0deg);
+}
+
+#blue-container .progress-bar {
+  border-bottom-color: blue;
+  border-right-color: var(--progress-bar);
+  border-top-color: var(--progress-bar);
+  transform: rotate(0deg);
+}
+
+#cyan-container .progress-bar {
+  border-bottom-color: cyan;
+  border-right-color: var(--progress-bar);
+  border-top-color: var(--progress-bar);
+  transform: rotate(0deg);
+}
+
+#magenta-container .progress-bar {
+  border-bottom-color: magenta;
+  border-right-color: var(--progress-bar);
+  border-top-color: var(--progress-bar);
+  transform: rotate(0deg);
+}
+
+#yellow-container .progress-bar {
+  border-bottom-color: yellow;
+  border-right-color: var(--progress-bar);
+  border-top-color: var(--progress-bar);
+  transform: rotate(0deg);
+}
+
+#black-container .progress-bar {
+  border-bottom-color: black;
+  border-right-color: var(--progress-bar);
+  border-top-color: var(--progress-bar);
+  transform: rotate(0deg);
+}
 
 
 /* Display */
