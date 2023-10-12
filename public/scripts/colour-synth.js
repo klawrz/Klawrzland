@@ -122,11 +122,6 @@ class ColourSynth {
     this.activePalette = palette;
   }
 
-  getDegreeFromValue(value) {
-    const degree = (value / 256) * 360;
-    return degree;
-  }
-
   update(updatedFamily) {
     // Pass in the updated family
     this.updateFamily(updatedFamily);
@@ -154,7 +149,7 @@ class ColourSynth {
     } else if (updatedFamily === 'rgb') {
       this.rgb = [knobs[3].value, knobs[4].value, knobs[5].value];
     } else {
-      this.hsl = [knobs[6].value, knobs[7].value, knobs[8].value, knobs[9].value];
+      this.cmyk = [knobs[6].value, knobs[7].value, knobs[8].value, knobs[9].value];
     }
   }
 
@@ -215,88 +210,13 @@ class ColourSynth {
     ];
   
     this.knobs.forEach((knob, index) => {
-      knob.value = knobValueMappings[index];
-      knob.updatePosition();
-      knob.updateDisplay();
+      if (knob.value !== knobValueMappings[index]) {
+        knob.value = knobValueMappings[index];
+        knob.updatePosition();
+        knob.updateDisplay();
+      }
     });
   }
-
-  updateKnobPosition(knob) {
-
-    knob.degrees = knob.valueToDegrees(knob.value);
-
-
-
-    this.knobs.forEach((knob) => {
-      if (knob === this.activeKnob) return;
-      knob.degrees = knob.valueToDegrees();
-      knob.element.style.transform = `rotate(${knob.degrees}deg)`;
-      if (knob.progress) knob.updateProgressBar();
-    });
-
-
-
-
-    /*
-    if (updatedFamily === 'hsl') {
-
-      // RGB
-      for (let i = 3, j = 0; i <= 5; i++) {
-        this.knobs[i].degrees = (this.rgb[j] / 256) * 360;
-        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].degrees}deg)`;
-      }
-
-      // CMYK
-      for (let i = 6, j = 0; i <= 9; i++) {
-        this.knobs[i].degrees = (this.cmyk[j] / 101) * 360;
-        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].degrees}deg)`;
-      }
-      
-    } else if (updatedFamily === 'cmyk') {
-
-      // RGB
-      for (let i = 3, j = 0; i <= 5; i++) {
-        this.knobs[i].degrees = (this.rgb[j] / 256) * 360;
-        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].degrees}deg)`;
-      }
-      
-      // HSL
-      this.knobs[0].degrees = this.hsl[0]; // Hue knob value needs no calculation
-
-      // S and L knob
-      for (let i = 1; i <= 2; i++) {
-        this.knobs[i].degrees = (this.hsl[i] / 101) * 360;
-        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].degrees}deg)`;
-      }
-
-    } else {
-      
-      // HSL
-      this.knobs[0].degrees = this.hsl[0]; // Hue knob value needs no calculation
-      this.knobs[0].element.style.transform = `rotate(${this.knobs[0].degrees}deg)`;
-
-      // S and L knob
-      for (let i = 1; i <= 2; i++) {
-        this.knobs[i].degrees = (this.hsl[i] / 101) * 360;
-        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].degrees}deg)`;
-      }
-
-      // CMYK
-      for (let i = 6, j = 0; i <= 9; i++) {
-        this.knobs[i].degrees = (this.cmyk[j] / 101) * 360;
-        this.knobs[i].element.style.transform = `rotate(${this.knobs[i].degrees}deg)`;
-      }
-
-    }
-    */
-  }
-
-  updateKnobDisplays() {
-    this.knobs.forEach((knob) => {
-      knob.updateDisplay(knob.value);
-    });
-  }
-
 
   updateOutputs() {
     // Update variables
@@ -489,19 +409,30 @@ class Knob {
     this.degrees = -135;
     this.value = 0;
     this.progress = this.type === 'HUE' ? null : element.previousElementSibling.children[0].children[0]; // inner progress bar element
+    this.display = this.element.nextElementSibling;
+    this.displayValue = false;
     this.family = this.assignFamily();
 
     // Conditionals
-    if (this.type === 'SAT') this.startDegrees = 135;
-    else if (this.type === 'LIG') this.startDegrees = 0;
+    if (this.type === 'SAT' || this.type === 'BLK') {
+      this.startDegrees = 135;
+      this.degrees = 135;
+      this.value = 100;
+    } else if (this.type === 'LIG') {
+      this.startDegrees = 0;
+      this.degrees = 0;
+      this.value = 50;
+    }
+    
     if (this.type !== 'HUE') this.element.style.transform = `rotate(${this.startDegrees}deg)`;
     
     // Events
-    this.element.addEventListener('mouseenter', this.handleMouseEnter.bind(this));
-    this.element.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
+    this.element.parentNode.addEventListener('mouseenter', this.handleMouseEnter.bind(this));
+    this.element.parentNode.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
     this.element.addEventListener('mousedown', this.handleMouseDown.bind(this));
     
     // Methods
+    if (this.progress) this.updateProgressBar();
   }
 
   handleMouseEnter(e) {
@@ -509,7 +440,7 @@ class Knob {
 
     colourSynth.hoveredKnob = this;
 
-    if (!this.hovered && !colourSynth.activeKnob) {
+    if (colourSynth.activeKnob === null) {
       this.hovered = true;
       this.showValue();
     }
@@ -520,9 +451,10 @@ class Knob {
 
     if (!this.active) {
       this.hovered = false; 
-      colourSynth.hoveredKnob = null;
       this.showType();
     }
+
+    colourSynth.hoveredKnob = null;
   }
 
   handleMouseDown(e) {
@@ -558,19 +490,47 @@ class Knob {
     document.removeEventListener('mousemove', this.boundMouseMove);
     document.removeEventListener('mouseup', this.boundMouseUp);
 
+    // If there is an active knob, and a hovered knob, but the hovered knob isn't the same as the active knob, show the hovered knob's values and mark hovered true, show the active knob's type and mark hovered as false
+    // If there is an active knob, and a hovered knob, and the hovered knob is the same as the active knob, don't stop displaying value, keep hovered marked as true
+    // If there is an active knob, but no hovered knob, show active knob type and mark hovered false
+    // Then unset the active knob
+
+    if (colourSynth.activeKnob) {
+      if (colourSynth.hoveredKnob) {
+        if (colourSynth.activeKnob !== colourSynth.hoveredKnob) {
+          colourSynth.activeKnob.hovered = false;
+          colourSynth.activeKnob.showType();
+
+          colourSynth.hoveredKnob.hovered = true;
+          colourSynth.hoveredKnob.showValue();
+        }
+      } else {
+        colourSynth.activeKnob.hovered = false;
+        colourSynth.activeKnob.showType();
+      }
+    }
+
     // Unset active knob
     colourSynth.activeKnob = null;
+    
+    /*
 
     // If we are hovering over a different knob, show it's value
-    if (colourSynth.hoveredKnob && colourSynth.hoveredKnob != this) colourSynth.hoveredKnob.showValue();
+    if (colourSynth.hoveredKnob && colourSynth.hoveredKnob != this) {
+      colourSynth.hoveredKnob.showValue();
+    }
 
     // Reset the hovered knob unless we are hovering over a knob
-    if (!this.hovered) colourSynth.hoveredKnob = null;
-
+    if (!this.hovered) {
+      colourSynth.hoveredKnob = null;
+      this.displayValue = false;
+      this.showType();
+    }
+    
+    
     this.hovered = false;
+    */
 
-    // Hide value, show knob type
-    this.showType();
   }
 
   assignFamily() {
@@ -664,6 +624,9 @@ class Knob {
     // Update knob value
     this.value = this.type === 'HUE' ? this.degrees : this.degreesToValue(this.degrees);
 
+    
+    console.log(this.type, this.value)
+
     // Update knob display value
     this.updateDisplay();
 
@@ -671,20 +634,10 @@ class Knob {
     colourSynth.update(this.family);
   }
 
-  /*
-  getDisplayValue() {
-    if (this.type === 'HUE') return this.degrees;
-    else if (this.type === 'SAT') return Math.floor(100 - (this.degrees / 360) * 100);
-    else if (this.type === 'LIG') return Math.floor(((this.degrees + 180) % 360) * (101 / 360));
-    else if (this.type === 'RED' || this.type === 'GRN' || this.type === 'BLU') return Math.floor((this.degrees / 360) * 256);
-    else return Math.floor((this.degrees / 360) * 101);
-  }
-  */
-
   updateDisplay() {
     const display = this.element.nextElementSibling;
     const value = display.children[1]
-
+    //console.log(this.type, this.value)
     value.children[0].textContent = this.value;
   }
 
@@ -697,9 +650,8 @@ class Knob {
   }
 
   showValue() {
-    const display = this.element.nextElementSibling;
-    const type = display.children[0];
-    const value = display.children[1]
+    const type = this.display.children[0];
+    const value = this.display.children[1]
 
     value.children[0].textContent = this.value;
 
@@ -708,48 +660,53 @@ class Knob {
   }
 
   showType() {
-    const display = this.element.nextElementSibling;
-    display.children[0].classList.remove('hidden');
-    display.children[1].classList.add('hidden')
+    this.display.children[0].classList.remove('hidden');
+    this.display.children[1].classList.add('hidden');
   }
-
-  /*
-  updateValues() {
-
-    // Set mode, pass it in with the function call
-    let mode;
-
-    if (this.type === 'HUE' || this.type === 'SAT' || this.type === 'LIG') mode = 'hsl';
-    if (this.type === 'RED' || this.type === 'GRN' || this.type === 'BLU') mode = 'rgb';
-    if (this.type === 'CYN' || this.type === 'MAG' || this.type === 'YEL' || this.type === 'BLK') mode = 'cmyk';
-
-    // Update colour values
-    colourSynth.updateKnobValues(mode);
-  }
-  */
 
   updateProgressBar() {
     this.progress.style.transform = `rotate(${this.degrees + 135}deg)`;
     let progress = parseInt(this.progress.style.transform.replace('rotate(', '').replace(')', ''));
     let segments = 0;
 
-    // Determine number of border segments
-    if (progress <= 90) segments = 1;
-    else if (progress >= 91 && progress <= 180) segments = 2;
-    else if (progress >= 181) segments = 3;
+    if (this.type === 'SAT') {
 
-    // Change border colour to indicate additional segments
-    if (segments === 1) {
-      this.progress.style.borderRightColor = 'var(--progress-bar)';
-      this.progress.style.borderTopColor = 'var(--progress-bar)';
-    } else if (segments === 2) {
-      this.progress.style.borderRightColor = this.color;
-      this.progress.style.borderTopColor = 'var(--progress-bar)';
-    } else if (segments === 3) {
-      this.progress.style.borderRightColor = this.color;
-      this.progress.style.borderTopColor = this.color;
+      // Determine number of border segments
+      if (progress <= 90) segments = 3;
+      else if (progress >= 91 && progress <= 180) segments = 2;
+      else if (progress >= 181) segments = 1;
+
+      // Change border colour to indicate additional segments
+      if (segments === 1) {
+        this.progress.style.borderTopColor = 'var(--progress-bar)';
+        this.progress.style.borderRightColor = 'var(--progress-bar)';
+      } else if (segments === 2) {
+        this.progress.style.borderTopColor = this.color;
+        this.progress.style.borderRightColor = 'var(--progress-bar)';
+      } else if (segments === 3) {
+        this.progress.style.borderRightColor = this.color;
+        this.progress.style.borderTopColor = this.color;
+      }
+
+    } else {
+
+      // Determine number of border segments
+      if (progress <= 90) segments = 1;
+      else if (progress >= 91 && progress <= 180) segments = 2;
+      else if (progress >= 181) segments = 3;
+
+      // Change border colour to indicate additional segments
+      if (segments === 1) {
+        this.progress.style.borderRightColor = 'var(--progress-bar)';
+        this.progress.style.borderTopColor = 'var(--progress-bar)';
+      } else if (segments === 2) {
+        this.progress.style.borderRightColor = this.color;
+        this.progress.style.borderTopColor = 'var(--progress-bar)';
+      } else if (segments === 3) {
+        this.progress.style.borderRightColor = this.color;
+        this.progress.style.borderTopColor = this.color;
+      }
     }
-
   }
 
   degreesToValue(degrees) {

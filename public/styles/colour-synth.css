@@ -86,7 +86,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-basis: 50%;
+  max-width: 7rem;
+  justify-self: center
 }
 
 
@@ -113,6 +114,11 @@
   border-radius: 50%;
   margin: 0.2rem auto;
   margin-top: -0.3rem;
+}
+
+.display {
+  min-width: 3rem;
+  text-align: center;
 }
 
 .display h5 {
@@ -245,7 +251,7 @@
 }
 
 #saturation-container .progress-bar {
-  border-bottom-color: gray;
+  border-left-color: gray;
   border-right-color: var(--progress-bar);
   border-top-color: var(--progress-bar);
   transform: rotate(0deg);
