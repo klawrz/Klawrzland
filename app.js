@@ -59,13 +59,6 @@ app.get('/freestyle', (req, res) => {
   res.render('freestyle');
 });
 
-app.get('/colour-synth', (req, res) => {
-  res.locals = {
-    title: "colourSynth"
-  };
-  res.render('colour-synth');
-});
-
 app.use((req, res, next) => {
   res.status(404).send("Sorry can't find that!")
 })

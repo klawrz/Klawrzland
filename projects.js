@@ -11,8 +11,11 @@ router.get('/', (req, res) => {
 });
 
 // Projects
-router.get('/colour-picker', (req, res) => {
-  res.render('colour-picker');
+router.get('/colourSynth', (req, res) => {
+  res.locals = {
+    title: "colourSynth"
+  };
+  res.render('colour-synth');
 });
 
 router.get('/paint', (req, res) => {

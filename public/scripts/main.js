@@ -13,9 +13,9 @@ function handleClick(e) {
     target.classList.add('active');
   
   
-    if (target.innerText == 'Colour Picker') {
-      imageElement.src = '/images/colour-picker.png';
-      button.href = '/projects/colour-picker'
+    if (target.innerText == 'ColourSynth') {
+      imageElement.src = '/images/colourSynth.png';
+      button.href = '/projects/colourSynth'
     }
   
     if (target.innerText == 'PAINT!') {
@@ -59,8 +59,8 @@ function handleMouseOver(e) {
   
     target.classList.add('active');
   
-    if (target.innerText == 'Colour Picker') {
-      imageElement.src = '/images/colour-picker.png';
+    if (target.innerText == 'ColourSynth') {
+      imageElement.src = '/images/colourSynth.png';
     }
   
     if (target.innerText == 'PAINT!') {
