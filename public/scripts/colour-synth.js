@@ -40,16 +40,16 @@ class ColourSynth {
     const target = e.target;
   
     // Create palette
-    if (target.matches('#new-palette')) newPalette();
+    if (target.matches('#new-palette')) this.newPalette();
     
     // Delete palette
-    if (target.matches('#delete-palette')) deletePalette();
+    if (target.matches('#delete-palette')) this.deletePalette();
   
     // Previous palette
-    if (target.matches('#previous-palette')) previousPalette();
+    if (target.matches('#previous-palette')) this.previousPalette();
     
     // Next palette
-    if (target.matches('#next-palette')) nextPalette();
+    if (target.matches('#next-palette')) this.nextPalette();
   
     // Handle swatch clicks
     if (target.matches('.swatch')) this.handleSwatch(e);
@@ -61,12 +61,11 @@ class ColourSynth {
   handleSwatch(e) {
     const target = e.target;
 
-    const id = parseInt(target.id.replace('swatch-', '')) % (Palette.maxSwatches + 1);
-
-    const swatch = colourSynth.activePalette.swatches[id-1];
+    const id = Array.from(target.parentNode.children).indexOf(target);
+    const swatch = this.activePalette.swatches[id];
 
     const activeColor = JSON.stringify(colourSynth.rgb);
-    const swatchColor = JSON.stringify(swatch.rgb);
+    let swatchColor = swatch.rgb ? JSON.stringify(swatch.rgb) : null;
 
     if (swatch.status) 
 
@@ -122,12 +121,31 @@ class ColourSynth {
     this.activePalette = palette;
   }
 
-  update(updatedFamily) {
-    // Pass in the updated family
-    this.updateFamily(updatedFamily);
+  newPalette() {
+    let palette = new Palette();
+    palette.initSwatches();
+  }
 
+  deletePalette() {
+    this.activePalette.delete();
+    this.activePalette.update();
+  }
+
+  previousPalette() {
+    this.activePalette.previous();
+    this.activePalette.update();
+  }
+
+  nextPalette() {
+    this.activePalette.next();
+    this.activePalette.update();
+  }
+
+  update(updatedFamily) {
     // Convert other families
     this.updateOtherFamilies(updatedFamily);
+
+    console.log(this.rgb, this.hsl, this.cmyk)
 
     // Update outputs
     this.updateOutputs();
@@ -631,6 +649,7 @@ class Knob {
     this.updateDisplay();
 
     // Update colourSynth
+    colourSynth.updateFamily(this.family);
     colourSynth.update(this.family);
   }
 
@@ -750,7 +769,7 @@ class Palette {
   setActive() {
     // Disable/hide other palettes
     colourSynth.palettes.forEach((palette) => {
-      if (palette == this) return;
+      if (palette === this) return;
       palette.element.classList.add('hidden');
     });
 
@@ -803,11 +822,11 @@ class Palette {
     // Fill the palette up with blank swatches
     while (this.swatches.length < Palette.maxSwatches) {
       // Color defaults to 'transparent' when unspecified
-      this.addSwatch(this.id, false);
+      this.addSwatch(this.id, false, null);
     }
   }
 
-  addSwatch(paletteId, status, color = 'transparent') {
+  addSwatch(paletteId, status, color = null) {
     this.swatches.push(new Swatch(paletteId, status, color));
   }
 
@@ -821,10 +840,10 @@ class Swatch {
   static #lastID = 0; // shared across all instances
   id;
 
-  constructor(paletteID, status, color) {
+  constructor(paletteID, status, color = null) {
     this.id = ++Swatch.#lastID;
     this.paletteID = paletteID;
-    this.rgb = null;
+    this.rgb = color;
     this.status = status;
     this.render(this.paletteID);
     this.element = this.getElement();
@@ -857,10 +876,10 @@ class Swatch {
   clear(target) {
     console.log('cleariong')
     // Clear: If swatch background matches page background, clear swatch (set swatch background to 'null', toggle status) + update local storage
-    this.color = null;
+    this.rgb = null;
     this.status = false;
 
-    target.style.backgroundColor = this.color;
+    target.style.backgroundColor = this.rgb;
     target.classList.add('empty');
     this.setLocalStorage();
   }
@@ -890,7 +909,7 @@ class Swatch {
     // Set background colour
     if (this.rgb) {
       let [r, g, b] = this.rgb;
-      swatch.style.backgroundColor = `rgb(${r}, ${g} ${b})`;
+      swatch.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
     } else {
       swatch.style.backgroundColor = null;
     }
@@ -914,8 +933,8 @@ class Swatch {
     // Update colour synth rgb value
     colourSynth.rgb = [r, g, b];
 
-    colourSynth.updateOutputs('rgb');
-    colourSynth.updateColorField();
+    colourSynth.updateOtherFamilies('rgb');
+    colourSynth.update('rgb');
   }
 
   getElement() {
@@ -998,22 +1017,6 @@ function setPalettes(paletteStorage) {
   });
 }
 
-// Palette control functions
-function newPalette() {
-  let palette = new Palette();
-  palette.initSwatches();
-}
-function deletePalette() {
-  colourSynth.activePalette.delete();
-  colourSynth.activePalette.update();
-}
-function previousPalette() {
-  colourSynth.activePalette.previous();
-  colourSynth.activePalette.update();
-}
-function nextPalette() {
-  colourSynth.activePalette.next();
-  colourSynth.activePalette.update();
-}
+
 
 init();
