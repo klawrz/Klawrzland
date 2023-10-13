@@ -468,3 +468,11 @@
   border-bottom: var(--section-border);
   box-shadow: var(--outer-shadow);
 }
+
+
+
+/* Logo */
+
+.colourSynth--logo-container {
+  text-align: center;
+}
