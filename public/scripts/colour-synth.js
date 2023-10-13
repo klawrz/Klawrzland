@@ -56,6 +56,20 @@ class ColourSynth {
 
     // Handle mode button clicks
     if (target.matches('.mode-button')) this.handleModeButton(e);
+
+    // Copy buttons
+    if (target.matches(".copy")) {
+      let output = document.querySelector('#output');
+      navigator.clipboard.writeText(output.textContent);
+
+      target.style.fontSize = `1.6rem`;
+      target.textContent = 'COPIED!';
+
+      setTimeout(() => {
+        target.style.fontSize = `2rem`;
+        target.textContent = 'COPY';
+      }, 1000);
+    }
   }
 
   handleSwatch(e) {
